@@ -1,0 +1,8 @@
+.env
+.vscode
+.venv
+*.egg-info
+build
+dist
+*.pyc
+*.json

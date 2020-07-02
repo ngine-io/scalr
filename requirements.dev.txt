@@ -1,0 +1,5 @@
+pytest>=5.0.0
+pytest-cache
+pytest-cov
+responses
+tox

@@ -1,0 +1,6 @@
+cloudscale
+pyyaml
+python-dotenv
+requests
+sanic
+apscheduler
