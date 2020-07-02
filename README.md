@@ -74,10 +74,13 @@ policy:
   # Query a web endpoint.
   # A JSON return o {"metric": <int>} is expected in this case.
   source: web
-  query:
-    url: http://localhost:8000/target.json
-    headers: []
-    key: "metric"
+  query: http://localhost:8000/target.json
+  config:
+    # Optional headers
+    headers:
+      Authorization: Bearer xyz
+    # Optional default key 'data'
+    key: metric
 
   # For testing purpose, random metric to get some action.
   # source: random

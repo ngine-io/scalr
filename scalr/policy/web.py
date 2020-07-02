@@ -10,10 +10,11 @@ class WebPolicy(PolicyBase):
         super().__init__()
 
     def _run_query(self) -> float:
-        url = self.query.get('url')
-        headers = self.query.get('headers', {})
-        timeout = self.query.get('timeout', 60)
-        key = self.query.get('key', "data")
+        url = self.query
+        log.info(f"Gather metrics from: {url}")
+        headers = self.config.get('headers', {})
+        timeout = self.config.get('timeout', 60)
+        key = self.config.get('key', "data")
         retries = 5
         while retries > 0:
             try:
