@@ -8,8 +8,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from sanic import Sanic
 from sanic.response import json
 
-import prometheus_client as prometheus
-
 from . import PolicyFactory
 from . import ScalrFactory
 
@@ -26,7 +24,6 @@ def scale(config, interval):
     with open(config, "r") as infile:
         configs = yaml.load(infile, Loader=yaml.FullLoader)
 
-    click.echo("---")
     if not configs.get('enabled'):
         log.info(f"Not enabled, skipping")
         return

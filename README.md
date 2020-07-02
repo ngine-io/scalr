@@ -7,7 +7,7 @@ Scalr allows to scale Cloud instances on Public Clouds such as:
 - [Cloudstack](https://cloudstack.apache.org) / [Exoscale](https://www.exoscale.com) / [PCextreme](https://www.pcextreme.com) (planned)
 - [Vultr](https://www.vultr.com) (planned)
 
-A policy defines the target and source where to gahter the metric from, such as:
+A policy defines the target and source where to gather the metric from, such as:
 
 - HTTP endpoint returning JSON
 - [Prometheus](https://prometheus.io) (planned)
@@ -37,7 +37,7 @@ CLOUDSCALE_API_TOKEN=<...>
 
 Scale configuration is made by creating a `config.yml` or whatever file `SCALR_CONFIG` points to.
 
-NOTE: The config will be read before every run, no need to restart a running Scalr service.
+NOTE: The config will be re-read before every run, no need to restart a running Scalr service after a config change.
 
 ```yaml
 ---
