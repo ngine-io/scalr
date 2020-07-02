@@ -3,8 +3,10 @@
 Scalr allows to scale Cloud instances on Public Clouds such as:
 
 - [Cloudscale.ch](https://www.cloudscale.ch/)
-- [Hetzner Cloud](https://www.hetzner.com/cloud) (planned)
-- [Cloudstack](https://cloudstack.apache.org) / [Exoscale](https://www.exoscale.com) / [PCextreme](https://www.pcextreme.com) (planned)
+- [Hetzner Cloud](https://www.hetzner.com/cloud)
+- [Cloudstack](https://cloudstack.apache.org) (planned)
+- [Exoscale](https://www.exoscale.com) (planned)
+- [PCextreme](https://www.pcextreme.com) (planned)
 - [Vultr](https://www.vultr.com) (planned)
 
 A policy defines the target and source where to gather the metric from, such as:
@@ -31,6 +33,7 @@ SCALR_INTERVAL=20
 SCALR_LOG_LEVEL=DEBUG
 SCALR_CONFIG=./config.yml
 CLOUDSCALE_API_TOKEN=<...>
+HCLOUD_API_TOKEN=<...>
 ```
 
 ## Configuration
@@ -38,6 +41,8 @@ CLOUDSCALE_API_TOKEN=<...>
 Scale configuration is made by creating a `config.yml` or whatever file `SCALR_CONFIG` points to.
 
 NOTE: The config will be re-read before every run, no need to restart a running Scalr service after a config change.
+
+### Config Cloudscale.ch
 
 ```yaml
 ---
@@ -98,6 +103,38 @@ launch_config:
     project: gemini
   ssh_keys:
     - ssh-rsa AAAA...
+  user_data: |
+    #cloud-config
+    manage_etc_hosts: true
+    package_update: true
+    package_upgrade: true
+    packages:
+      - nginx
+```
+
+### Config Hetzner Cloud
+
+```yaml
+---
+kind: hcloud
+enabled: true
+dry_run: false
+cooldown: 120
+min: 0
+max: 2
+max_step_down: 1
+policy:
+  target: 5
+  source: web
+  query: http://localhost:8000/target.json
+launch_config:
+  server_type: cx11
+  image: debian-10
+  labels:
+    project: gemini
+  location: fsn1
+  ssh_keys:
+    - my_key
   user_data: |
     #cloud-config
     manage_etc_hosts: true

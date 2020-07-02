@@ -1,4 +1,5 @@
 from .cloud.cloudscale_ch import CloudscaleChScalr
+from .cloud.hcloud import HcloudScalr
 
 from .policy.random import RandomPolicy
 from .policy.web import WebPolicy
@@ -23,6 +24,7 @@ class ScalrFactory(Factory):
     def __init__(self):
         self.cloud_classes = {
             'cloudscale_ch': CloudscaleChScalr,
+            'hcloud': HcloudScalr,
         }
 
 
