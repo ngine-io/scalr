@@ -47,23 +47,23 @@ enabled: true
 # Allows to run Scalr without any actions taken.
 dry_run: false
 
-# Time to let Scalr hold on futher actions after an action was taken.
+# Time to let Scalr hold on further actions after an action was taken.
 cooldown: 120
 
 # Range in which Scalr will scale.
 min: 0
 max: 2
 
-# Define how many instances can be scaled down at once
+# Define how many instances can be scaled down at once.
 max_step_down: 1
 
 policy:
   # Target is the metric we want to reach. A source metric returned higher than this target will result in scaling up, a lower to scaling down.
-  # P.ex.: Given a target of 5, a source metric returned of 10 will results in a scaling factor 2.0.
+  # For example: given a target of 5, a source metric returned of 10 will results in a scaling factor 2.0.
   # With 2 instances already running, a factor 2 will scale to 4 instances (2 x 2.0), except the max allow instances is lower than 4.
   target: 5
 
-  # Query an Prometheus endpoint (not yet implemented).
+  # Query a Prometheus endpoint (not yet implemented).
   # source: prometheus
   # query: "scalar(avg(haproxy_server_current_sessions))"
 
@@ -72,21 +72,21 @@ policy:
   # query: "select value from cpu_load_short;"
 
   # Query a web endpoint.
-  # A JSON return o {"metric": <int>} is expected in this case
+  # A JSON return o {"metric": <int>} is expected in this case.
   source: web
   query:
     url: http://localhost:8000/target.json
     headers: []
     key: "metric"
 
-  # For testing purpose, random metric to get some action
+  # For testing purpose, random metric to get some action.
   # source: random
   # config:
   #   start: 1
   #   stop: 10
 
 # Launch config to use for new instances.
-# (Changing this config have no affect to running Cloud instances. This may change in the future.)
+# (Changing a launch config have no affect to running Cloud instances. But this may change in the future.)
 launch_config:
   flavor: flex-2
   image: debian-10
