@@ -29,8 +29,11 @@ class CloudscaleChScalr(ScalrBase):
                 continue;
 
             if server['status'] == 'stopped':
-                self.cloudscale.server.start(uuid=server['uuid'])
-                log.info(f"server {server['name']} started")
+                if not self.dry_run:
+                    self.cloudscale.server.start(uuid=server['uuid'])
+                    log.info(f"Server {server['name']} started")
+                else:
+                    log.info(f"Dry run server {server['name']} started")
                 continue
 
     def scale_up(self, diff):
@@ -50,9 +53,10 @@ class CloudscaleChScalr(ScalrBase):
             })
 
             if not self.dry_run:
-                self.cloudscale.server.create(**launch_config)
+                server = self.cloudscale.server.create(**launch_config)
+                log.info(f"Creating server {name}")
             else:
-                log.info(f"Dry run creating {name}")
+                log.info(f"Dry run creating server {name}")
             diff -= 1
 
     def scale_down(self, diff):
@@ -61,6 +65,7 @@ class CloudscaleChScalr(ScalrBase):
             uuid = self._get_random_uuid()
             if not self.dry_run:
                 self.cloudscale.server.delete(uuid=uuid)
+                log.info(f"Deleting server uuid={uuid}")
             else:
-                log.info(f"Dry run deleting {uuid}")
+                log.info(f"Dry run deleting server uuid={uuid}")
             diff -= 1
