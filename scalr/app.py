@@ -8,12 +8,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from sanic import Sanic
 from sanic.response import json
 
-from . import PolicyFactory
-from . import ScalrFactory
+from scalr import PolicyFactory
+from scalr import ScalrFactory
 
-from .log import log
-from .db import read_from_db, write_into_db
-from .version import __version__
+from scalr.log import log
+from scalr.db import read_from_db, write_into_db
+from scalr.version import __version__
 
 
 scheduler = BackgroundScheduler()

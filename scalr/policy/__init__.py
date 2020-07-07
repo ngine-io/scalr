@@ -1,5 +1,5 @@
 
-from ..log import log
+from scalr.log import log
 
 
 class PolicyBase:

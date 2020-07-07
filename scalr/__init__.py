@@ -1,9 +1,8 @@
-from .cloud.cloudscale_ch import CloudscaleChScalr
-from .cloud.hcloud import HcloudScalr
+from scalr.cloud.cloudscale_ch import CloudscaleChScalr
+from scalr.cloud.hcloud import HcloudScalr
 
-from .policy.random import RandomPolicy
-from .policy.web import WebPolicy
-
+from scalr.policy.random import RandomPolicy
+from scalr.policy.web import WebPolicy
 
 class Factory:
 

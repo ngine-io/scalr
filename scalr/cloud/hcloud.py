@@ -1,8 +1,8 @@
 import os
 import uuid
 import random
-from . import ScalrBase
-from ..log import log
+from scalr.cloud import ScalrBase
+from scalr.log import log
 
 from hcloud import Client, APIException
 from hcloud.images.domain import Image
@@ -18,14 +18,14 @@ class HcloudScalr(ScalrBase):
         super().__init__()
         self.hcloud = Client(token=os.getenv('HCLOUD_API_TOKEN'))
 
-    def get_current(self):
+    def get_current(self) -> list:
         if self.current_servers is None:
             label = f'scalr={self.name}'
             log.info(f"Querying with label: {label}")
             self.current_servers = self.hcloud.servers.get_all(label_selector=label)
         return self.current_servers
 
-    def _get_random_server(self):
+    def _get_random_server(self) -> str:
         index = random.randint(0, len(self.current_servers) - 1)
         return self.current_servers.pop(index)
 
@@ -39,7 +39,7 @@ class HcloudScalr(ScalrBase):
                 else:
                     log.info(f"Dry run server {server.name} started")
 
-    def scale_up(self, diff):
+    def scale_up(self, diff: int):
         log.info(f"scaling up {diff}")
 
         while diff > 0:
@@ -67,7 +67,7 @@ class HcloudScalr(ScalrBase):
                 log.info(f"Dry run creating server name={name}")
             diff -= 1
 
-    def scale_down(self, diff):
+    def scale_down(self, diff: int):
         log.info(f"scaling down {diff}")
         while diff > 0:
             server = self._get_random_server()

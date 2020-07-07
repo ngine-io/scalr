@@ -1,8 +1,9 @@
 import os
 import uuid
 import random
-from . import ScalrBase
-from ..log import log
+from scalr.cloud import ScalrBase
+from scalr.log import log
+
 from cloudscale import Cloudscale, CloudscaleApiException
 
 
@@ -12,13 +13,13 @@ class CloudscaleChScalr(ScalrBase):
         super().__init__()
         self.cloudscale = Cloudscale(api_token=os.getenv('CLOUDSCALE_API_TOKEN'))
 
-    def get_current(self):
+    def get_current(self) -> list:
         filter_tag = f'scalr={self.name}'
         log.info(f"Querying with filter_tag: {filter_tag}")
         self.current_servers = self.cloudscale.server.get_all(filter_tag=filter_tag)
         return self.current_servers
 
-    def _get_random_uuid(self):
+    def _get_random_uuid(self) -> str:
         index = random.randint(0, len(self.current_servers) - 1)
         return self.current_servers.pop(index)['uuid']
 
@@ -36,7 +37,7 @@ class CloudscaleChScalr(ScalrBase):
                     log.info(f"Dry run server {server['name']} started")
                 continue
 
-    def scale_up(self, diff):
+    def scale_up(self, diff: int):
         log.info(f"scaling up {diff}")
 
         while diff > 0:
@@ -59,7 +60,7 @@ class CloudscaleChScalr(ScalrBase):
                 log.info(f"Dry run creating server {name}")
             diff -= 1
 
-    def scale_down(self, diff):
+    def scale_down(self, diff: int):
         log.info(f"scaling down {diff}")
         while diff > 0:
             uuid = self._get_random_uuid()
