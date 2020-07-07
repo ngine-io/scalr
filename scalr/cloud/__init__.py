@@ -26,14 +26,8 @@ class ScalrBase:
     def ensure_running(self):
         raise NotADirectoryError
 
-    def scale(self, factor: float):
 
-        if self.min > self.max:
-            raise Exception(f"error: min {self.min} > max {self.max}")
-
-        servers = self.get_current()
-        self.current = len(servers)
-        log.info(f"current amount: {self.current}")
+    def calc_diff(self, factor: float) -> int:
 
         log.info(f"factor: {factor}")
         if self.current <= 0:
@@ -52,10 +46,30 @@ class ScalrBase:
             log.info(f"desired < min: reset to {desired}")
             desired = self.min
 
+        log.info(f"desired {desired}")
         self.desired = desired
 
         diff = desired - self.current
         log.info(f"calculated diff: {diff}")
+
+        if diff < 0 and self.max_step_down < diff * -1:
+            log.info(f"hit max down step: {self.max_step_down}")
+            diff = self.max_step_down * -1
+        return diff
+
+    def scale(self, factor: float):
+
+        if self.min > self.max:
+            raise Exception(f"error: min {self.min} > max {self.max}")
+
+        servers = self.get_current()
+        if servers is None:
+            raise Exception(f"Current servers is None")
+
+        self.current = len(servers)
+        log.info(f"current amount: {self.current}")
+
+        diff = calc_diff()
 
         if diff == 0:
             log.info(f"no action taken")
@@ -67,13 +81,8 @@ class ScalrBase:
             self.scale_up(diff)
             self.action = f"Scaling up {diff}"
 
-
         elif diff < 0:
             diff = diff * -1
-            if self.max_step_down < diff:
-                log.info(f"hit max down step: {self.max_step_down}")
-                diff = self.max_step_down
-
             self.scale_down(diff)
             self.action = f"Scaling down {diff}"
 
