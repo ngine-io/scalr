@@ -1,11 +1,12 @@
-from ..log import log
+from scalr.log import log
 import time
 import math
+
 
 class ScalrBase:
 
     def __init__(self):
-        self.current_servers = None
+        self.current_servers: list = None
         self.min: int = 0
         self.max: int = 0
         self.name: str = "scalr"
@@ -19,13 +20,13 @@ class ScalrBase:
         self.needs_cooldown: bool = False
         self.action: str = ""
 
-    def get_current(self):
+    def get_current(self) -> list:
         raise NotImplementedError
 
     def ensure_running(self):
         raise NotADirectoryError
 
-    def scale(self, factor: int):
+    def scale(self, factor: float):
 
         if self.min > self.max:
             raise Exception(f"error: min {self.min} > max {self.max}")
@@ -82,8 +83,8 @@ class ScalrBase:
             self.needs_cooldown = True
             log.info(f"needs cooldown")
 
-    def scale_up(self, diff):
+    def scale_up(self, diff: int):
         raise NotImplementedError
 
-    def scale_down(self, diff):
+    def scale_down(self, diff: int):
         raise NotImplementedError

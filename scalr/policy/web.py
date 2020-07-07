@@ -1,6 +1,6 @@
 import os
-from . import PolicyBase
-from ..log import log
+from scalr.policy import PolicyBase
+from scalr.log import log
 import requests
 import time
 

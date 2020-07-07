@@ -1,7 +1,7 @@
 import os
 import random
-from . import PolicyBase
-from ..log import log
+from scalr.policy import PolicyBase
+from scalr.log import log
 
 
 class RandomPolicy(PolicyBase):

@@ -4,3 +4,4 @@ pyyaml
 python-dotenv
 sanic
 apscheduler
+requests==2.23
