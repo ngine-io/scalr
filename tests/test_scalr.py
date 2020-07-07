@@ -13,10 +13,10 @@ class FakeScalr(ScalrBase):
         pass
 
     def scale_up(self, diff: int):
-        return diff
+        pass
 
     def scale_down(self, diff: int):
-        return diff
+        pass
 
 
 def test_not_implementend_scalr():

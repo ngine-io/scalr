@@ -26,7 +26,6 @@ class ScalrBase:
     def ensure_running(self):
         raise NotADirectoryError
 
-
     def calc_diff(self, factor: float) -> int:
 
         log.info(f"factor: {factor}")
