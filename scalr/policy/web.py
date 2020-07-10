@@ -15,7 +15,7 @@ class WebPolicy(PolicyBase):
         headers = self.config.get('headers', {})
         timeout = self.config.get('timeout', 60)
         key = self.config.get('key', "data")
-        retries = 5
+        retries = 3
         while retries > 0:
             try:
                 r = requests.get(url, headers=headers, timeout=timeout)
@@ -23,7 +23,7 @@ class WebPolicy(PolicyBase):
             except Exception as e:
                 log.error(f"Error {e}")
             retries -= 1
-            time.sleep(3)
+            time.sleep(2)
         else:
             raise Exception(f"Error: Max retries reached")
 

@@ -68,7 +68,7 @@ class ScalrBase:
         self.current = len(servers)
         log.info(f"current amount: {self.current}")
 
-        diff = calc_diff()
+        diff = self.calc_diff(factor=factor)
 
         if diff == 0:
             log.info(f"no action taken")

@@ -46,12 +46,22 @@ def scale(config, interval):
 
     policy_configs = configs.get('policy')
 
-    policy_factory = PolicyFactory()
-    policy = policy_factory.get_instance(policy_configs.get('source'))
-    policy.query = policy_configs.get('query')
-    policy.config = policy_configs.get('config')
-    policy.target = policy_configs.get('target')
-    factor = policy.get_scaling_factor()
+    scaling_factor = 0
+    for policy_config in policy_configs:
+        try:
+            log.info(f"Processing {policy_config['name']}")
+
+            policy_factory = PolicyFactory()
+            policy = policy_factory.get_instance(policy_config.get('source'))
+            policy.query = policy_config.get('query')
+            policy.config = policy_config.get('config')
+            policy.target = policy_config.get('target')
+
+            policy_factor = policy.get_scaling_factor()
+            if policy_factor > scaling_factor:
+                scaling_factor = policy_factor
+        except Exception as e:
+            log.error(f"error: {e}")
 
     scale_factory = ScalrFactory()
     scalr = scale_factory.get_instance(configs.get('kind'))
@@ -60,7 +70,8 @@ def scale(config, interval):
     scalr.max = configs['max']
     scalr.max_step_down = configs['max_step_down']
     scalr.launch_config = configs['launch_config']
-    scalr.scale(factor=factor)
+
+    scalr.scale(factor=scaling_factor)
 
     result = {
         'min': scalr.min,
