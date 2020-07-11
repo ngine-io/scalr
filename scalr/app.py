@@ -69,6 +69,7 @@ def scale(config, interval):
     scalr.min = configs['min']
     scalr.max = configs['max']
     scalr.max_step_down = configs['max_step_down']
+    scalr.scale_down_selection = configs['scale_down_selection']
     scalr.launch_config = configs['launch_config']
 
     scalr.scale(factor=scaling_factor)

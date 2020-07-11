@@ -1,6 +1,4 @@
 import os
-import uuid
-import random
 from scalr.cloud import ScalrBase
 from scalr.log import log
 
@@ -18,10 +16,6 @@ class CloudscaleChScalr(ScalrBase):
         log.info(f"Querying with filter_tag: {filter_tag}")
         self.current_servers = self.cloudscale.server.get_all(filter_tag=filter_tag)
         return self.current_servers
-
-    def _get_random_uuid(self) -> str:
-        index = random.randint(0, len(self.current_servers) - 1)
-        return self.current_servers.pop(index)['uuid']
 
     def ensure_running(self):
         for server in self.get_current():
@@ -46,10 +40,8 @@ class CloudscaleChScalr(ScalrBase):
             tags = launch_config.get('tags', {})
             tags.update({'scalr': self.name})
 
-            uid = str(uuid.uuid4()).split('-')[0]
-            name = f"{self.name}-{uid}"
             launch_config.update({
-                'name': name,
+                'name': self.get_unique_name(),
                 'tags': tags
             })
 
@@ -63,7 +55,7 @@ class CloudscaleChScalr(ScalrBase):
     def scale_down(self, diff: int):
         log.info(f"scaling down {diff}")
         while diff > 0:
-            uuid = self._get_random_uuid()
+            uuid = self.get_selected_server().get('uuid')
             if not self.dry_run:
                 self.cloudscale.server.delete(uuid=uuid)
                 log.info(f"Deleting server uuid={uuid}")

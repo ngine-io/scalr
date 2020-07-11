@@ -1,6 +1,8 @@
 from scalr.log import log
 import time
 import math
+import random
+import uuid
 
 
 class ScalrBase:
@@ -15,10 +17,24 @@ class ScalrBase:
         self.launch_config: dict = dict()
         self.dry_run: bool = False
         self.max_step_down: int = 1
+        self.scale_down_selection: str = "random"
         self.desired: int = 0
         self.current: int = 0
         self.needs_cooldown: bool = False
         self.action: str = ""
+
+    def get_unique_name(self):
+        uid = str(uuid.uuid4()).split('-')[0]
+        return f"{self.name}-{uid}"
+
+    def get_selected_server(self) -> str:
+        if not self.current_servers:
+            raise Exception("Error: no current servers found")
+        if self.scale_down_selection == "oldest":
+            index = 0
+        else:
+            index = random.randint(0, len(self.current_servers) - 1)
+        return self.current_servers.pop(index)
 
     def get_current(self) -> list:
         raise NotImplementedError
@@ -27,7 +43,6 @@ class ScalrBase:
         raise NotADirectoryError
 
     def calc_diff(self, factor: float) -> int:
-
         log.info(f"factor: {factor}")
         if self.current <= 0:
             calc_current = 1
@@ -57,7 +72,6 @@ class ScalrBase:
         return diff
 
     def scale(self, factor: float):
-
         if self.min > self.max:
             raise Exception(f"error: min {self.min} > max {self.max}")
 
