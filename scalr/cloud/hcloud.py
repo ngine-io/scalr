@@ -1,6 +1,4 @@
 import os
-import uuid
-import random
 from scalr.cloud import ScalrBase
 from scalr.log import log
 
@@ -25,10 +23,6 @@ class HcloudScalr(ScalrBase):
             self.current_servers = self.hcloud.servers.get_all(label_selector=label)
         return self.current_servers
 
-    def _get_random_server(self) -> str:
-        index = random.randint(0, len(self.current_servers) - 1)
-        return self.current_servers.pop(index)
-
     def ensure_running(self):
         for server in self.get_current():
             log.info(f"server {server.name} status {server.status}")
@@ -48,16 +42,14 @@ class HcloudScalr(ScalrBase):
             labels = lc.get('labels', {})
             labels.update({'scalr': self.name})
 
-            uid = str(uuid.uuid4()).split('-')[0]
-            name = f"{self.name}-{uid}"
-
             params = {
-                'name': name,
+                'name': self.get_unique_name(),
                 'labels': labels,
                 'server_type': ServerType(lc['server_type']),
                 'image': Image(lc['image']),
                 'ssh_keys': [SSHKey(ssh_key) for ssh_key in lc['ssh_keys']],
                 'location': Location(lc['location']),
+                'user_data': lc['user_data'],
             }
 
             if not self.dry_run:
@@ -70,7 +62,7 @@ class HcloudScalr(ScalrBase):
     def scale_down(self, diff: int):
         log.info(f"scaling down {diff}")
         while diff > 0:
-            server = self._get_random_server()
+            server = self.get_selected_server()
             if not self.dry_run:
                 self.hcloud.servers.delete(server)
                 log.info(f"Deleting server id={server.id}")
