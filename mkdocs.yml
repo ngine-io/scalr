@@ -1,0 +1,20 @@
+site_name: Scalr - Autoscaling for Clouds
+repo_url: https://github.com/ngine-io/scalr
+nav:
+  - Home: index.md
+  - Setup: setup.md
+  - Configs:
+    - Common: config.md
+    - Policy Configs: policy_configs.md
+    - Launch Configs: launch_configs.md
+
+theme:
+  name: material
+  palette:
+    primary: cyan
+    scheme: slate
+markdown_extensions:
+  - codehilite
+  - admonition
+plugins:
+  - search
