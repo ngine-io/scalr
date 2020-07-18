@@ -1,8 +1,12 @@
 
+import yaml
+import datetime
+
 from scalr import PolicyFactory
 from scalr import ScalrFactory
 from scalr.log import log
 from scalr.db import read_from_db, write_into_db
+
 
 def scale(config, interval):
     with open(config, "r") as infile:
