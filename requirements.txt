@@ -2,6 +2,7 @@ hcloud
 cloudscale-sdk
 pyyaml
 python-dotenv
-sanic
 apscheduler
 requests==2.23
+uvicorn
+fastapi
