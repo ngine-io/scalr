@@ -33,7 +33,9 @@ Your Cloud and policy configuration are defined by a configuration endpoint. Sca
 
 ## Install
 
-WARNING: Scalr is heavily under development.
+!!! warning
+    Scalr is heavily under development. This will break.
+
 
 ```shell
 pip install https://github.com/ngine-io/scalr/archive/main.zip

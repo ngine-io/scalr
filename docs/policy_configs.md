@@ -6,12 +6,16 @@ Policies define if and how much to scale.
 
 The target in is the metric we want to reach. A source metric returned higher than this target will result in scaling up, a lower to scaling down.
 
-For example: given a target of 5, a source metric returned of 10 will results in a scaling factor 2.0.
-With 2 instances already running, a factor 2 will scale to 4 instances (2 x 2.0), except the max allow instances is lower than 4.
+!!! example
+    Given a target of 5, a source metric returned of 10 will results in a scaling factor 2.0.
+    With 2 instances already running, a factor 2 will scale to 4 instances (2 x 2.0), except the max allow instances is lower than 4.
 
 ## Prometheus Policy
 
-Query a Prometheus endpoint (not yet implemented).
+Query a Prometheus endpoint.
+
+!!! note
+     Not yet implemented.
 
 ```yaml
 policy:
@@ -23,7 +27,10 @@ policy:
 
 ## InfluxDB Policy
 
-Query an InfluxDB endpoint (not yet implemented).
+Query an InfluxDB endpoint.
+
+!!! note
+     Not yet implemented.
 
 ```yaml
 policy:

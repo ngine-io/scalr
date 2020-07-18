@@ -2,7 +2,8 @@
 
 Launch config to use for new instances.
 
-Note: Changing a launch config have no affect to running Cloud instances. But this may change in the future.)
+!!! Warning
+    Changing a launch config have no affect to running Cloud instances. But this may change in the future.
 
 ## Cloudscale.ch
 
