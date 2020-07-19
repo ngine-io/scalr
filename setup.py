@@ -19,13 +19,14 @@ with open("scalr/version.py") as fp:
     exec(fp.read(), version)
 
 setup(
-    name="scalr",
+    name="scalr-ngine",
     version=version['__version__'],
     author="René Moser",
     author_email="mail@renemoser.net",
     license="MIT",
     description="Autoscaling for Clouds.",
     long_description=long_description,
+    long_description_content_type="text/markdown",
     url="https://github.com/ngine-io/scalr",
     packages=find_packages(exclude=["test.*", "tests"]),
     classifiers=[

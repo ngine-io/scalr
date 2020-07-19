@@ -1,14 +1,20 @@
 clean:
-	rm -rf .tox
-	rm -rf .venv
-	find -name '*.pyc' -delete
+	rm -rf *.egg-info
+	rm -rf *.dist-info
+	rm -rf dist
+	rm -rf build
+
+build: clean
+	python3 setup.py sdist bdist_wheel
+
+test-release:
+	twine upload --repository testpypi dist/*
+
+release:
+	twine upload dist/*
+
+docs-publish:
+	mkdocs gh-deploy
 
 test:
 	tox
-
-install:
-	test -d venv || python3 -m venv .venv
-	(
-		.venv/bin/activate
-		pip3 install .
-	)
