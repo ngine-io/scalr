@@ -31,8 +31,8 @@ app.add_middleware(
 @app.on_event("startup")
 def startup_event():
     log.info("Scalr started")
-    config = os.getenv('SCALR_CONFIG') or './config.yml'
-    interval = int(os.getenv('SCALR_INTERVAL')) or 60
+    config = os.getenv('SCALR_CONFIG', './config.yml')
+    interval = int(os.getenv('SCALR_INTERVAL', 60))
     log.info(f"interval is set to: {interval}")
     scheduler.add_job(scale, 'interval', [config, interval], seconds=interval, max_instances=1)
     scheduler.start()
