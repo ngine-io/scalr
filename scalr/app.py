@@ -58,8 +58,8 @@ async def root():
 def main():
     uvicorn.run(
         "scalr.app:app",
-        host="0.0.0.0",
-        port=5000,
+        host=os.getenv('SCALR_HOST', '127.0.0.1'),
+        port=int(os.getenv('SCALR_PORT', 5000)),
         log_level="info"
     )
 
