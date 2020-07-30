@@ -14,7 +14,8 @@ class CloudscaleChScalr(ScalrBase):
     def get_current(self) -> list:
         filter_tag = f'scalr={self.name}'
         log.info(f"Querying with filter_tag: {filter_tag}")
-        self.current_servers = self.cloudscale.server.get_all(filter_tag=filter_tag)
+        servers = self.cloudscale.server.get_all(filter_tag=filter_tag)
+        self.current_servers = sorted(servers, key = lambda i: i['created_at'])
         return self.current_servers
 
     def ensure_running(self):

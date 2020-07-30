@@ -20,7 +20,7 @@ class HcloudScalr(ScalrBase):
         if self.current_servers is None:
             label = f'scalr={self.name}'
             log.info(f"Querying with label: {label}")
-            self.current_servers = self.hcloud.servers.get_all(label_selector=label)
+            self.current_servers = self.hcloud.servers.get_all(label_selector=label, sort="created:asc")
         return self.current_servers
 
     def ensure_running(self):
