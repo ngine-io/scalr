@@ -42,8 +42,9 @@ class HcloudScalr(ScalrBase):
             labels = lc.get('labels', {})
             labels.update({'scalr': self.name})
 
+            name = self.get_unique_name()
             params = {
-                'name': self.get_unique_name(),
+                'name': mame,
                 'labels': labels,
                 'server_type': ServerType(lc['server_type']),
                 'image': Image(lc['image']),

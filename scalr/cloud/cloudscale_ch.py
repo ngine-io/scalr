@@ -40,9 +40,10 @@ class CloudscaleChScalr(ScalrBase):
             tags = launch_config.get('tags', {})
             tags.update({'scalr': self.name})
 
+            name = self.get_unique_name()
             launch_config.update({
-                'name': self.get_unique_name(),
-                'tags': tags
+                'name': name,
+                'tags': tags,
             })
 
             if not self.dry_run:
