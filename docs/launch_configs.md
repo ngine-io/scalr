@@ -27,6 +27,27 @@ launch_config:
       - nginx
 ```
 
+## DigitalOcean
+
+```yaml
+kind: digitalocean
+launch_config:
+  size: s-1vcpu-1gb
+  image: debian-10-x64
+  region: ams3
+  ssh_keys:
+    - 'b5:be:e8:...'
+  tags:
+    - 'project=gemini'
+  user_data: |
+    #cloud-config
+    manage_etc_hosts: true
+    package_update: true
+    package_upgrade: true
+    packages:
+      - nginx
+```
+
 ## Hetzner Cloud
 
 ```yaml

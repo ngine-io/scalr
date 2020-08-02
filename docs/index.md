@@ -8,7 +8,7 @@ This is the connector to the API of your Cloud provider. It reads current availa
 
 - [Cloudscale.ch](https://www.cloudscale.ch)
 - [Hetzner Cloud](https://www.hetzner.com/cloud)
-- [DigitalOcean](https://www.digitalocean.com)(planned)
+- [DigitalOcean](https://www.digitalocean.com)
 - [Cloudstack](https://cloudstack.apache.org) (planned)
 - [Exoscale](https://www.exoscale.com) (planned)
 - [PCextreme](https://www.pcextreme.com) (planned)
