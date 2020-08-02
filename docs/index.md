@@ -6,8 +6,9 @@ Scalr allows to scale Cloud instances based on policy checks in a configurable i
 
 This is the connector to the API of your Cloud provider. It reads current available servers of your Scalr group and scales up and down based on a calculation factor:
 
-- [Cloudscale.ch](https://www.cloudscale.ch/)
+- [Cloudscale.ch](https://www.cloudscale.ch)
 - [Hetzner Cloud](https://www.hetzner.com/cloud)
+- [DigitalOcean](https://www.digitalocean.com)(planned)
 - [Cloudstack](https://cloudstack.apache.org) (planned)
 - [Exoscale](https://www.exoscale.com) (planned)
 - [PCextreme](https://www.pcextreme.com) (planned)
@@ -26,16 +27,16 @@ A policy defines check of a target value (amount of CPU, amount of HTTP requests
 Your Cloud and policy configuration are defined by a configuration endpoint. Scalr reads its configuration on every run and can be changed inbetween runs.
 
 - Static YAML file
+- HTTP endpoint returning JSON
 - API, configs can be changed by HTTP post (planned)
+- S3 compatible object store (planned)
 - [etcd](https://etcd.io) (planned)
 - [consul](https://www.consul.io) (planned)
-- HTTP endpoint returning JSON
 
 ## Install
 
 !!! warning
-    Scalr is heavily under development. This will break.
-
+    Scalr is heavily under development.
 
 ```shell
 pip install https://github.com/ngine-io/scalr/archive/main.zip
