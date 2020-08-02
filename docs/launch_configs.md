@@ -27,6 +27,27 @@ launch_config:
       - nginx
 ```
 
+## Apache CloudStack
+
+```yaml
+kind: cloudstack
+launch_config:
+  service_offering: Micro
+  template: Linux Debian 10
+  zone: de-xy-1
+  ssh_key: my-key
+  tags:
+    project: gemini
+  root_disk_size: 20
+  user_data: |
+    #cloud-config
+    manage_etc_hosts: true
+    package_update: true
+    package_upgrade: true
+    packages:
+      - nginx
+```
+
 ## DigitalOcean
 
 ```yaml

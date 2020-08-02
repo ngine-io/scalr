@@ -1,6 +1,7 @@
 hcloud
 cloudscale-sdk
 python-digitalocean
+cs
 pyyaml
 python-dotenv
 apscheduler
