@@ -303,6 +303,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#apache-cloudstack" class="md-nav__link">
+    Apache CloudStack
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#digitalocean" class="md-nav__link">
+    DigitalOcean
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hetzner-cloud" class="md-nav__link">
     Hetzner Cloud
   </a>
@@ -354,6 +368,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#apache-cloudstack" class="md-nav__link">
+    Apache CloudStack
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#digitalocean" class="md-nav__link">
+    DigitalOcean
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hetzner-cloud" class="md-nav__link">
     Hetzner Cloud
   </a>
@@ -396,6 +424,46 @@
     <span class="nt">project</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gemini</span>
   <span class="nt">ssh_keys</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ssh-rsa AAAA...</span>
+  <span class="nt">user_data</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">#cloud-config</span>
+    <span class="no">manage_etc_hosts: true</span>
+    <span class="no">package_update: true</span>
+    <span class="no">package_upgrade: true</span>
+    <span class="no">packages:</span>
+      <span class="no">- nginx</span>
+</code></pre></div>
+
+
+<h2 id="apache-cloudstack">Apache CloudStack</h2>
+<div class="codehilite"><pre><span></span><code><span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cloudstack</span>
+<span class="nt">launch_config</span><span class="p">:</span>
+  <span class="nt">service_offering</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Micro</span>
+  <span class="nt">template</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Linux Debian 10</span>
+  <span class="nt">zone</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">de-xy-1</span>
+  <span class="nt">ssh_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-key</span>
+  <span class="nt">tags</span><span class="p">:</span>
+    <span class="nt">project</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gemini</span>
+  <span class="nt">root_disk_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+  <span class="nt">user_data</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">#cloud-config</span>
+    <span class="no">manage_etc_hosts: true</span>
+    <span class="no">package_update: true</span>
+    <span class="no">package_upgrade: true</span>
+    <span class="no">packages:</span>
+      <span class="no">- nginx</span>
+</code></pre></div>
+
+
+<h2 id="digitalocean">DigitalOcean</h2>
+<div class="codehilite"><pre><span></span><code><span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">digitalocean</span>
+<span class="nt">launch_config</span><span class="p">:</span>
+  <span class="nt">size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">s-1vcpu-1gb</span>
+  <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian-10-x64</span>
+  <span class="nt">region</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ams3</span>
+  <span class="nt">ssh_keys</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;b5:be:e8:...&#39;</span>
+  <span class="nt">tags</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;project=gemini&#39;</span>
   <span class="nt">user_data</span><span class="p">:</span> <span class="p p-Indicator">|</span>
     <span class="no">#cloud-config</span>
     <span class="no">manage_etc_hosts: true</span>

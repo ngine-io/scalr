@@ -425,8 +425,9 @@
 <h2 id="cloud-plugins">Cloud Plugins</h2>
 <p>This is the connector to the API of your Cloud provider. It reads current available servers of your Scalr group and scales up and down based on a calculation factor:</p>
 <ul>
-<li><a href="https://www.cloudscale.ch/">Cloudscale.ch</a></li>
+<li><a href="https://www.cloudscale.ch">Cloudscale.ch</a></li>
 <li><a href="https://www.hetzner.com/cloud">Hetzner Cloud</a></li>
+<li><a href="https://www.digitalocean.com">DigitalOcean</a></li>
 <li><a href="https://cloudstack.apache.org">Cloudstack</a> (planned)</li>
 <li><a href="https://www.exoscale.com">Exoscale</a> (planned)</li>
 <li><a href="https://www.pcextreme.com">PCextreme</a> (planned)</li>
@@ -443,15 +444,16 @@
 <p>Your Cloud and policy configuration are defined by a configuration endpoint. Scalr reads its configuration on every run and can be changed inbetween runs.</p>
 <ul>
 <li>Static YAML file</li>
+<li>HTTP endpoint returning JSON</li>
 <li>API, configs can be changed by HTTP post (planned)</li>
+<li>S3 compatible object store (planned)</li>
 <li><a href="https://etcd.io">etcd</a> (planned)</li>
 <li><a href="https://www.consul.io">consul</a> (planned)</li>
-<li>HTTP endpoint returning JSON</li>
 </ul>
 <h2 id="install">Install</h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Scalr is heavily under development. This will break.</p>
+<p>Scalr is heavily under development.</p>
 </div>
 <div class="codehilite"><pre><span></span><code>pip install https://github.com/ngine-io/scalr/archive/main.zip
 </code></pre></div>
