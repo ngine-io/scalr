@@ -8,15 +8,15 @@ from scalr.log import log
 from scalr.db import read_from_db, write_into_db
 
 
-def scale(config, interval):
-    with open(config, "r") as infile:
-        configs = yaml.load(infile, Loader=yaml.FullLoader)
+def scale(config_file, interval):
+    with open(config_file, "r") as infile:
+        config = yaml.load(infile, Loader=yaml.FullLoader)
 
-    if not configs.get('enabled'):
+    if not config.get('enabled'):
         log.info(f"Not enabled, skipping")
         return
 
-    if configs.get('dry_run'):
+    if config.get('dry_run'):
         log.info("Dry running")
 
     last_result = read_from_db()
@@ -32,7 +32,7 @@ def scale(config, interval):
             write_into_db(last_result)
             return
 
-    policy_configs = configs.get('policy')
+    policy_configs = config.get('policy')
 
     scaling_factor = 0
     for policy_config in policy_configs:
@@ -40,11 +40,7 @@ def scale(config, interval):
             log.info(f"Processing {policy_config['name']}")
 
             policy_factory = PolicyFactory()
-            policy = policy_factory.get_instance(policy_config.get('source'))
-            policy.query = policy_config.get('query')
-            policy.config = policy_config.get('config')
-            policy.target = policy_config.get('target')
-
+            policy = policy_factory.get_instance(config=policy_config)
             policy_factor = policy.get_scaling_factor()
             if policy_factor > scaling_factor:
                 scaling_factor = policy_factor
@@ -52,14 +48,7 @@ def scale(config, interval):
             log.error(f"error: {e}")
 
     scale_factory = ScalrFactory()
-    scalr = scale_factory.get_instance(configs.get('kind'))
-    scalr.dry_run = configs['dry_run']
-    scalr.min = configs['min']
-    scalr.max = configs['max']
-    scalr.max_step_down = configs['max_step_down']
-    scalr.scale_down_selection = configs.get('scale_down_selection')
-    scalr.launch_config = configs['launch_config']
-
+    scalr = scale_factory.get_instance(config=config)
     scalr.scale(factor=scaling_factor)
 
     result = {
@@ -74,7 +63,7 @@ def scale(config, interval):
     }
 
     if scalr.needs_cooldown :
-        result['cooldown'] = configs['cooldown']
+        result['cooldown'] = config['cooldown']
         log.info(f"needs cooling down for: {result['cooldown']}")
 
     write_into_db(result)

@@ -4,11 +4,11 @@ from scalr.log import log
 
 class PolicyBase:
 
-    def __init__(self):
-        super().__init__()
-        self.target: int
-        self.config: dict = dict()
-        self.query: str
+    def configure(self, name: str, target: int, query: str, config: dict = dict()):
+        self.name = name
+        self.target = target
+        self.query = query
+        self.config = config
 
-    def get_scaling_factor():
+    def get_scaling_factor(self) -> float:
         raise NotImplementedError

@@ -6,9 +6,6 @@ from scalr.log import log
 
 class RandomPolicy(PolicyBase):
 
-    def __init__(self):
-        super().__init__()
-
     def get_scaling_factor(self) -> float:
         start = int(self.config.get('start', 0))
         stop = int(self.config.get('stop', 100))

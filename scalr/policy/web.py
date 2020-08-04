@@ -6,9 +6,6 @@ import time
 
 class WebPolicy(PolicyBase):
 
-    def __init__(self):
-        super().__init__()
-
     def _run_query(self) -> float:
         url = self.query
         log.info(f"Gather metrics from: {url}")

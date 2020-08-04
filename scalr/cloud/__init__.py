@@ -1,4 +1,5 @@
 from scalr.log import log
+from scalr.config.scalr import ScalrConfig
 import time
 import math
 import random
@@ -8,20 +9,37 @@ import uuid
 class ScalrBase:
 
     def __init__(self):
-        self.current_servers: list = None
+        self.name: str = "scalr"
         self.min: int = 0
         self.max: int = 0
-        self.name: str = "scalr"
-        self.interval: int = 60
-        self.policy: Policy
         self.launch_config: dict = dict()
         self.dry_run: bool = False
         self.max_step_down: int = 1
         self.scale_down_selection: str = "random"
+
         self.desired: int = 0
         self.current: int = 0
-        self.needs_cooldown: bool = False
         self.action: str = ""
+        self.needs_cooldown: bool = False
+        self.current_servers: list = None
+
+    def configure(
+        self,
+        name: str = "scalr",
+        min: int = 0,
+        max: int = 0,
+        launch_config: dict = dict(),
+        dry_run: bool = False,
+        max_step_down: int = 1,
+        scale_down_selection: str = "random",
+    ):
+        self.name = name
+        self.min = min
+        self.max = max
+        self.launch_config = launch_config
+        self.dry_run = dry_run
+        self.max_step_down = max_step_down
+        self.scale_down_selection = scale_down_selection
 
     def get_unique_name(self):
         uid = str(uuid.uuid4()).split('-')[0]
@@ -42,12 +60,21 @@ class ScalrBase:
     def ensure_running(self):
         raise NotADirectoryError
 
-    def calc_diff(self, factor: float) -> int:
+    def get_current_size(self) -> int:
+        servers = self.get_current()
+        if servers is None:
+            raise Exception(f"Current servers is None")
+
+        current = len(servers)
+        log.info(f"current amount: {current}")
+        return current
+
+    def calc_diff(self, factor: float, current_size: int) -> int:
         log.info(f"factor: {factor}")
-        if self.current <= 0:
+        if current_size <= 0:
             calc_current = 1
         else:
-            calc_current = self.current
+            calc_current = current_size
 
         desired = math.ceil(calc_current * factor)
         log.info(f"desired amount: {desired}")
@@ -63,7 +90,7 @@ class ScalrBase:
         log.info(f"desired {desired}")
         self.desired = desired
 
-        diff = desired - self.current
+        diff = desired - current_size
         log.info(f"calculated diff: {diff}")
 
         if diff < 0 and self.max_step_down < diff * -1:
@@ -75,14 +102,8 @@ class ScalrBase:
         if self.min > self.max:
             raise Exception(f"error: min {self.min} > max {self.max}")
 
-        servers = self.get_current()
-        if servers is None:
-            raise Exception(f"Current servers is None")
-
-        self.current = len(servers)
-        log.info(f"current amount: {self.current}")
-
-        diff = self.calc_diff(factor=factor)
+        current_size = self.get_current_size()
+        diff = self.calc_diff(factor=factor, current_size=current_size)
 
         if diff == 0:
             log.info(f"no action taken")
@@ -110,3 +131,6 @@ class ScalrBase:
 
     def scale_down(self, diff: int):
         raise NotImplementedError
+
+    def __repr__() -> str:
+        return f"{self.name}"

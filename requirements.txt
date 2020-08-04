@@ -8,3 +8,4 @@ apscheduler
 requests==2.23
 uvicorn
 fastapi
+pydantic
