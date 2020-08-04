@@ -11,7 +11,7 @@
       
       
       <link rel="shortcut icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.3.2">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.2">
     
     
       
@@ -19,9 +19,9 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.fe0cca5b.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.25b81cc6.min.css">
       
-        <link rel="stylesheet" href="assets/stylesheets/palette.a46bcfb3.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.80a78273.min.css">
       
       
         
@@ -412,7 +412,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/ngine-io/scalr/edit/master/docs/index.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/ngine-io/scalr/edit/main/docs/index.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -423,25 +423,26 @@
                 <h1 id="scalr-autoscaling-for-clouds">Scalr - Autoscaling for Clouds</h1>
 <p>Scalr allows to scale Cloud instances based on policy checks in a configurable interval. Scalr has 3 pluggable interfaces: config, cloud, policy.</p>
 <h2 id="cloud-plugins">Cloud Plugins</h2>
-<p>This is the connector to the API of your Cloud provider. It reads current available servers of your Scalr group and scales up and down based on a calculation factor:</p>
+<p>This is the connector to the API of your Cloud provider. It reads current available servers of your Scalr group and scales up and down based on a calculation factor received from one or more policies:</p>
 <ul>
 <li><a href="https://www.cloudscale.ch">Cloudscale.ch</a></li>
 <li><a href="https://www.hetzner.com/cloud">Hetzner Cloud</a></li>
 <li><a href="https://www.digitalocean.com">DigitalOcean</a></li>
-<li><a href="https://cloudstack.apache.org">Cloudstack</a> (planned)</li>
+<li><a href="https://cloudstack.apache.org">Cloudstack</a></li>
 <li><a href="https://www.exoscale.com">Exoscale</a> (planned)</li>
 <li><a href="https://www.pcextreme.com">PCextreme</a> (planned)</li>
 <li><a href="https://www.vultr.com">Vultr</a> (planned)</li>
 </ul>
 <h2 id="policy-plugins">Policy Plugins</h2>
-<p>A policy defines check of a target value (amount of CPU, amount of HTTP requests, etc) and where to gather the metric from, such as the follwoing. Multiple policies can be used in a single config.</p>
+<p>A policy defines check of a target value (amount of CPU, amount of HTTP requests, etc) and where to gather the metric from, such as the following. Multiple policies can be used in a single config.</p>
 <ul>
 <li>HTTP endpoint returning JSON</li>
+<li>Random Metric (for testing)</li>
 <li><a href="https://prometheus.io">Prometheus</a> (planned)</li>
 <li><a href="https://www.influxdata.com/">InfluxDB</a> (planned)</li>
 </ul>
 <h2 id="config-interfaces-plugins">Config Interfaces / Plugins</h2>
-<p>Your Cloud and policy configuration are defined by a configuration endpoint. Scalr reads its configuration on every run and can be changed inbetween runs.</p>
+<p>Your Cloud and policy configuration are defined by a configuration. Scalr reads its configuration on every run and can be changed inbetween runs.</p>
 <ul>
 <li>Static YAML file</li>
 <li>HTTP endpoint returning JSON</li>
@@ -514,15 +515,15 @@
       
     </div>
     
-      <script src="assets/javascripts/vendor.d710d30a.min.js"></script>
-      <script src="assets/javascripts/bundle.7f4f3c92.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      <script src="assets/javascripts/vendor.592d4e23.min.js"></script>
+      <script src="assets/javascripts/bundle.806ca5c4.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
       
       <script>
         app = initialize({
           base: ".",
           features: [],
           search: Object.assign({
-            worker: "assets/javascripts/worker/search.9b3611bd.min.js"
+            worker: "assets/javascripts/worker/search.01088dc6.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
