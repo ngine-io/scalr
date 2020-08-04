@@ -1,5 +1,6 @@
 site_name: Scalr - Autoscaling for Clouds
 repo_url: https://github.com/ngine-io/scalr
+edit_uri: edit/main/docs/
 nav:
   - Home: index.md
   - Setup: setup.md
