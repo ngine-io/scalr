@@ -4,9 +4,7 @@ from scalr.config.policy import PolicyConfig
 from scalr.cloud.cloudscale_ch import CloudscaleChScalr
 from scalr.cloud.cloudstack import CloudstackScalr
 from scalr.cloud.digitalocean import DigitaloceanScalr
-from scalr.cloud.exoscale import ExoscaleScalr
 from scalr.cloud.hcloud import HcloudScalr
-
 
 from scalr.policy.random import RandomPolicy
 from scalr.policy.web import WebPolicy
@@ -20,7 +18,7 @@ class Factory:
         self.id = None
         self.cloud_classes = dict()
 
-    def get_model(self, data) -> dict:
+    def parse(self, data) -> dict:
         raise NotImplementedError()
 
     def get_instance(self, config) -> object:
@@ -50,7 +48,6 @@ class ScalrFactory(Factory):
             'cloudscale_ch': CloudscaleChScalr,
             'cloudstack': CloudstackScalr,
             'digitalocean': DigitaloceanScalr,
-            'exoscale': ExoscaleScalr,
             'hcloud': HcloudScalr,
         }
 
