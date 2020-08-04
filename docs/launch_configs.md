@@ -1,6 +1,6 @@
 # Launch configs
 
-Launch config to use for new instances.
+Launch config to be used for new instances.
 
 !!! Warning
     Changing a launch config have no affect to running Cloud instances. But this may change in the future.
@@ -59,7 +59,7 @@ launch_config:
   ssh_keys:
     - 'b5:be:e8:...'
   tags:
-    - 'project=gemini'
+    - 'project:gemini'
   user_data: |
     #cloud-config
     manage_etc_hosts: true

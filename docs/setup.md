@@ -2,18 +2,44 @@
 
 Setup can be initialised either by ENV vars or by providing a `.env` file:
 
+## Common Setup configs
+
 ```ini
 SCALR_DB=scalr_db.json
 SCALR_INTERVAL=20
 SCALR_LOG_LEVEL=DEBUG
 SCALR_CONFIG=./config.yml
+```
 
+## Cloudscale.ch API token
+
+```ini
 CLOUDSCALE_API_TOKEN=<...>
+```
 
-CLOUDSTACK_API_KEY=https://cloud.example.com/client/api
+## CloudStack API configs
+
+```ini
+CLOUDSTACK_API_ENDPOINT=https://cloud.example.com/client/api
 CLOUDSTACK_API_KEY=<...>
 CLOUDSTACK_API_SECRET=<...>
+```
 
+## DigitalOcean API access token
+
+```ini
 DIGITALOCEAN_ACCESS_TOKEN=<...>
+```
+
+## Exoscale API configs
+
+```ini
+EXOSCALE_API_KEY=<...>
+EXOSCALE_API_SECRET=<...>
+```
+
+## Hetzner Cloud API token
+
+```ini
 HCLOUD_API_TOKEN=<...>
 ```
