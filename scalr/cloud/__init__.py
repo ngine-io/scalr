@@ -23,23 +23,14 @@ class ScalrBase:
         self.needs_cooldown: bool = False
         self.current_servers: list = None
 
-    def configure(
-        self,
-        name: str = "scalr",
-        min: int = 0,
-        max: int = 0,
-        launch_config: dict = dict(),
-        dry_run: bool = False,
-        max_step_down: int = 1,
-        scale_down_selection: str = "random",
-    ):
-        self.name = name
-        self.min = min
-        self.max = max
-        self.launch_config = launch_config
-        self.dry_run = dry_run
-        self.max_step_down = max_step_down
-        self.scale_down_selection = scale_down_selection
+    def configure(self, config: ScalrConfig):
+        self.name = config.name
+        self.min = config.min
+        self.max = config.max
+        self.launch_config = config.launch_config
+        self.dry_run = config.dry_run
+        self.max_step_down = config.max_step_down
+        self.scale_down_selection = config.scale_down_selection
 
     def get_unique_name(self):
         uid = str(uuid.uuid4()).split('-')[0]

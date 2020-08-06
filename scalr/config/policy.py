@@ -3,7 +3,8 @@ from typing import Optional
 
 
 class PolicyConfig(BaseModel):
-    name: str
+    source: str
+    name: Optional[str]
     target: int
     query: Optional[str]
     config: Optional[dict]

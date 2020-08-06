@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 
 class ScalrConfig(BaseModel):
+    kind: str
     min: int = 0
     max: int = 0
     name: str = "scalr"

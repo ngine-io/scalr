@@ -14,25 +14,22 @@ from scalr.log import log
 
 class Factory:
 
-    def __init__(self):
-        self.id = None
+    def __init__(self, config: dict = dict()):
+        self.config = config
         self.cloud_classes = dict()
 
     def parse(self, data) -> dict:
         raise NotImplementedError()
 
-    def get_instance(self, config) -> object:
+    def get_instance(self, name: str) -> object:
         try:
-            # select class to instantiate by given ID
-            name = config[self.id]
-
             # Validate config
-            parsed_config = self.parse(data=config)
+            Config = self.parse()
             log.info(f"Parsed config for policy {name}")
 
             obj_class = self.cloud_classes[name]
             obj = obj_class()
-            obj.configure(**parsed_config)
+            obj.configure(Config)
             return obj
         except KeyError as e:
             msg = f"{e} not implemented"
@@ -41,9 +38,8 @@ class Factory:
 
 class ScalrFactory(Factory):
 
-    def __init__(self):
-        super().__init__()
-        self.id = "kind"
+    def __init__(self, config: dict = dict()):
+        super().__init__(config=config)
         self.cloud_classes = {
             'cloudscale_ch': CloudscaleChScalr,
             'cloudstack': CloudstackScalr,
@@ -51,19 +47,18 @@ class ScalrFactory(Factory):
             'hcloud': HcloudScalr,
         }
 
-    def parse(self, data) -> dict:
-        return ScalrConfig(**data).dict()
+    def parse(self) -> ScalrConfig:
+        return ScalrConfig(**self.config)
 
 
 class PolicyFactory(Factory):
 
-    def __init__(self):
-        super().__init__()
-        self.id = "source"
+    def __init__(self, config: dict = dict()):
+        super().__init__(config=config)
         self.cloud_classes = {
             'random': RandomPolicy,
             'web': WebPolicy,
         }
 
-    def parse(self, data) -> dict:
-        return PolicyConfig(**data).dict()
+    def parse(self):
+        return PolicyConfig(**self.config)
