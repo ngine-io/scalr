@@ -8,15 +8,31 @@ from scalr.log import log
 from scalr.db import read_from_db, write_into_db
 
 
-def scale(config_file, interval):
+def get_scaling_factor(policy_configs: list) -> int:
+    scaling_factor = 0
+    for policy_config in policy_configs:
+        try:
+            log.info(f"Processing {policy_config['name']}")
+
+            policy_factory = PolicyFactory(config=policy_config)
+            policy = policy_factory.get_instance(policy_config.get('source'))
+            policy_factor = policy.get_scaling_factor()
+            if policy_factor > scaling_factor:
+                scaling_factor = policy_factor
+        except Exception as e:
+            log.error(f"error: {e}")
+    return scaling_factor
+
+
+def scale(config_file: str, interval: int):
     with open(config_file, "r") as infile:
         config = yaml.load(infile, Loader=yaml.FullLoader)
 
-    if not config.get('enabled'):
+    if not config.get('enabled', True):
         log.info(f"Not enabled, skipping")
         return
 
-    if config.get('dry_run'):
+    if config.get('dry_run', False):
         log.info("Dry running")
 
     last_result = read_from_db()
@@ -33,19 +49,7 @@ def scale(config_file, interval):
             return
 
     policy_configs = config.get('policy', [])
-
-    scaling_factor = 0
-    for policy_config in policy_configs:
-        try:
-            log.info(f"Processing {policy_config['name']}")
-
-            policy_factory = PolicyFactory(config=policy_config)
-            policy = policy_factory.get_instance(policy_config.get('source'))
-            policy_factor = policy.get_scaling_factor()
-            if policy_factor > scaling_factor:
-                scaling_factor = policy_factor
-        except Exception as e:
-            log.error(f"error: {e}")
+    scaling_factor = get_scaling_factor(policy_configs)
 
     scale_factory = ScalrFactory(config=config)
     scalr = scale_factory.get_instance(config['kind'])
