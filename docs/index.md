@@ -9,7 +9,7 @@ This is the connector to the API of your Cloud provider. It reads current availa
 - [Cloudscale.ch](https://www.cloudscale.ch)
 - [Hetzner Cloud](https://www.hetzner.com/cloud)
 - [DigitalOcean](https://www.digitalocean.com)
-- [Cloudstack](https://cloudstack.apache.org)
+- [Apache CloudStack](https://cloudstack.apache.org)
 - [Exoscale](https://www.exoscale.com) (planned)
 - [PCextreme](https://www.pcextreme.com) (planned)
 - [Vultr](https://www.vultr.com) (planned)
@@ -40,7 +40,7 @@ Your Cloud and policy configuration are defined by a configuration. Scalr reads 
     Scalr is heavily under development.
 
 ```shell
-pip install https://github.com/ngine-io/scalr/archive/main.zip
+pip install scalr-ngine
 ```
 
 ## Start Scalr
