@@ -1,6 +1,6 @@
 import pytest
 
-from scalr import PolicyFactory
+from scalr.factory.policy import PolicyFactory
 
 
 def test_not_implementend_policy():

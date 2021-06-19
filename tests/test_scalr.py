@@ -1,6 +1,6 @@
 import pytest
 
-from scalr import ScalrFactory
+from scalr.factory.scalr import ScalrFactory
 from scalr.cloud import ScalrBase
 
 
