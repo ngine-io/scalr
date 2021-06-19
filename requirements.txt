@@ -4,8 +4,6 @@ python-digitalocean
 cs
 pyyaml
 python-dotenv
-apscheduler
-requests==2.23
-uvicorn
-fastapi
-pydantic
+requests
+influxdb
+schedule

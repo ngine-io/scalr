@@ -1,0 +1,104 @@
+---
+# NOTE: the name is used to prefix and identify resources by a tag.
+# If changed, existing resources won't be scaled and must be deleted manually.
+name: app
+
+# Whether the scaling is enabled/disabled, default disabled
+enabled: true
+
+dry_run: false
+
+cooldown: 60
+
+min: 0
+max: 3
+
+max_step_down: 2
+scale_down_selection: oldest
+
+policy:
+  ## Query a web endpoint.
+  ## A JSON return o {"metric": <int>} is expected in this case
+- name: my check over web
+  target: 5
+  source: web
+  query: http://localhost:8000/target.json
+  config:
+    headers:
+      Authorization: Bearer xyz
+    key: metric
+
+# - name: random one to ten
+#   target: 5
+#   source: random
+#   config:
+#     start: 1
+#     stop: 10
+
+kind: digitalocean
+launch_config:
+# Cloudscale
+  # flavor: flex-2
+  # image: debian-10
+  # zone: lpg1
+  # tags:
+  #   project: gemini
+  # ssh_keys:
+  #   - ssh-rsa AAAAB...
+  # user_data: |
+  #   #cloud-config
+  #   manage_etc_hosts: true
+  #   package_update: true
+  #   package_upgrade: true
+  #   packages:
+  #     - nginx
+
+# Hetzner Cloud
+  # server_type: cx11
+  # image: debian-10
+  # labels:
+  #   project: gemini
+  # location: fsn1
+  # ssh_keys:
+  #   - resmo
+  # user_data: |
+  #   #cloud-config
+  #   manage_etc_hosts: true
+  #   package_update: true
+  #   package_upgrade: true
+  #   packages:
+  #     - nginx
+
+# Cloudstack
+  # service_offering: Micro
+  # template: Linux Debian 10 (Buster) 64-bit
+  # security_groups:
+  #   - default
+  # zone: de-muc-1
+  # ssh_key: rmoser-puzzle
+  # tags:
+  #   project: gemini
+  # root_disk_size: 20
+  # user_data: |
+  #   #cloud-config
+  #   manage_etc_hosts: true
+  #   package_update: true
+  #   package_upgrade: true
+  #   packages:
+  #     - nginx
+
+# Digital Ocean
+  # size: s-1vcpu-1gb
+  # image: debian-10-x64
+  # region: ams3
+  # ssh_keys:
+  #   - 'b5:be:e8:...'
+  # tags:
+  #   - 'project:gemini'
+  # user_data: |
+  #   #cloud-config
+  #   manage_etc_hosts: true
+  #   package_update: true
+  #   package_upgrade: true
+  #   packages:
+  #     - nginx

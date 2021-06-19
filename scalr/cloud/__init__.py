@@ -1,5 +1,5 @@
 from scalr.log import log
-from scalr.config.scalr import ScalrConfig
+from scalr.model.scalr import Scalr
 import time
 import math
 import random
@@ -16,14 +16,14 @@ class ScalrBase:
         self.dry_run: bool = False
         self.max_step_down: int = 1
         self.scale_down_selection: str = "random"
+        self.cooldown: int = 300
 
         self.desired: int = 0
         self.current: int = 0
         self.action: str = ""
-        self.needs_cooldown: bool = False
         self.current_servers: list = None
 
-    def configure(self, config: ScalrConfig):
+    def configure(self, config: Scalr):
         self.name = config.name
         self.min = config.min
         self.max = config.max
@@ -31,6 +31,7 @@ class ScalrBase:
         self.dry_run = config.dry_run
         self.max_step_down = config.max_step_down
         self.scale_down_selection = config.scale_down_selection
+        self.cooldown = config.cooldown
 
     def get_unique_name(self):
         uid = str(uuid.uuid4()).split('-')[0]
@@ -114,8 +115,11 @@ class ScalrBase:
         self.ensure_running()
 
         if not self.dry_run:
-            self.needs_cooldown = True
-            log.info(f"needs cooldown")
+            log.info(f"needs cooldown: {self.cooldown}")
+            for i in range(self.cooldown):
+                print(f"cooling down: {i}\r", end='', flush=True)
+                time.sleep(1)
+            print("\r", end='', flush=True)
 
     def scale_up(self, diff: int):
         raise NotImplementedError

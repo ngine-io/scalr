@@ -1,6 +1,6 @@
 # Configs
 
-Scale configuration is made by creating a `config.yml` or whatever file `SCALR_CONFIG` points to.
+Scale configuration is made by creating a `config.yaml` or whatever file `SCALR_CONFIG` points to.
 
 !!! note
     The config will be re-read before every run, no need to restart a running Scalr service after a config change.

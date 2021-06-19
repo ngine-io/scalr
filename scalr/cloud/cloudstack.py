@@ -32,7 +32,7 @@ class CloudstackScalr(ScalrBase):
     def ensure_running(self):
         for server in self.get_current():
             log.info(f"server {server['name']} status {server['state']}")
-            if server['state'] in  ['stopping', 'stopped']:
+            if server['state'] in ['stopping', 'stopped']:
                 if not self.dry_run:
                     self.cs.startVirtualMachine(id=server['id'])
                     log.info(f"Server {server['name']} started")
@@ -60,30 +60,36 @@ class CloudstackScalr(ScalrBase):
             raise Exception(f"Error: Template not found: {name}")
         return res['template'][0]
 
+    def _get_deploy_params(self, lc):
+        user_data =  lc.get('user_data')
+        if user_data:
+            user_data = base64.b64encode(user_data.encode("utf-8"))
+
+        return {
+            'serviceofferingid': self._get_service_offering(name=lc['service_offering']).get('id'),
+            'affinitygroupnames': lc.get('affinity_groups'),
+            'securitygroupnames': lc.get('security_groups'),
+            'templateid': self._get_template(name=lc['template']).get('id'),
+            'zoneid': self._get_zone(name=lc['zone']).get('id'),
+            'userdata': user_data,
+            'keypair': lc.get('ssh_key'),
+            'group': lc.get('group'),
+            'rootdisksize': lc.get('root_disk_size'),
+        }
+
     def scale_up(self, diff: int):
         log.info(f"scaling up {diff}")
 
-        while diff > 0:
+        if diff > 0:
             lc = self.launch_config.copy()
+            params = self._get_deploy_params(lc)
 
-            user_data =  lc.get('user_data')
-            if user_data:
-                user_data = base64.b64encode(user_data.encode("utf-8"))
+        while diff > 0:
 
             name = self.get_unique_name()
-            params = {
+            params.update({
                 'name': name,
-                'serviceofferingid': self._get_service_offering(name=lc['service_offering']).get('id'),
-                'affinitygroupnames': lc.get('affinity_groups'),
-                'securitygroupnames': lc.get('security_groups'),
-                'templateid': self._get_template(name=lc['template']).get('id'),
-                'zoneid': self._get_zone(name=lc['zone']).get('id'),
-                'userdata': user_data,
-                'keypair': lc.get('ssh_key'),
-                'group': lc.get('group'),
-                'rootdisksize': lc.get('root_disk_size'),
-            }
-
+            })
             lc_tags = lc.get('tags', {})
             tags = [{
                 'key': "scalr",
@@ -91,9 +97,9 @@ class CloudstackScalr(ScalrBase):
             }]
             for key, value in lc_tags.items():
                 if key != self.name:
-                    tags.append(
-                        {'key': key,
-                    'value': value
+                    tags.append({
+                        'key': key,
+                        'value': value
                 })
 
             if not self.dry_run:

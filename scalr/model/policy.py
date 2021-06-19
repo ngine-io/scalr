@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-class PolicyConfig(BaseModel):
+class Policy(BaseModel):
     source: str
     name: Optional[str]
     target: int

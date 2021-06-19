@@ -1,68 +1,86 @@
 import os
-import click
-import yaml
-import uvicorn
+import sys
 
-from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
+import time
+import schedule
+from argparse import ArgumentParser
 
-from apscheduler.schedulers.background import BackgroundScheduler
-
-from scalr.db import read_from_db
 from scalr.version import __version__
-from scalr.task import scale
 from scalr.log import log
+from scalr.config import read_config
 
-scheduler = BackgroundScheduler()
+from scalr.factory.scalr import ScalrFactory
+from scalr.factory.policy import PolicyFactory
 
-app = FastAPI(
-    title="scalr",
-    openapi_url="/api/openapi.json",
-)
+def get_scaling_factor(policy_configs: list) -> int:
+    scaling_factor: int = 0
+    for policy_config in policy_configs:
+        try:
+            log.info(f"Processing {policy_config['name']}")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+            policy_factory = PolicyFactory(config=policy_config)
+            policy = policy_factory.get_instance(policy_config.get('source'))
+            policy_factor: int = policy.get_scaling_factor()
+            if policy_factor > scaling_factor:
+                scaling_factor = policy_factor
+        except Exception as e:
+            log.error(f"error: {e}")
 
+    return scaling_factor
 
-@app.on_event("startup")
-def startup_event():
-    log.info("Scalr started")
-    config = os.getenv('SCALR_CONFIG', './config.yml')
-    interval = int(os.getenv('SCALR_INTERVAL', 60))
-    log.info(f"interval is set to: {interval}")
-    scheduler.add_job(scale, 'interval', [config, interval], seconds=interval, max_instances=1)
-    scheduler.start()
+def app() -> None:
+    print("")
+    try:
+        config: dict = read_config(config_source=os.getenv('SCALR_CONFIG', 'config.yaml'))
+        if not config.get('enabled', False):
+            log.info(f"not enabled, aborting...")
+            return
 
+        scale_factory = ScalrFactory(config=config)
+        scalr = scale_factory.get_instance(config['kind'])
+        scalr.scale(
+            factor=get_scaling_factor(
+                config.get('policies', [])
+            )
+        )
+    except Exception as ex:
+        log.error(ex)
+        sys.exit(1)
 
-@app.on_event("shutdown")
-def shutdown_event():
-    log.info("Scalr stopped")
-    scheduler.shutdown(wait=False)
+def run_periodic(interval: int = 1) -> None:
+    log.info(f"Running periodic in intervals of {interval} minute")
+    schedule.every(interval).minutes.do(app)
+    time.sleep(1)
+    schedule.run_all()
+    while True:
+        schedule.run_pending()
+        print(f".", end='', flush=True)
+        time.sleep(1)
 
+def main() -> None:
+    parser: ArgumentParser = ArgumentParser()
+    parser.add_argument("--periodic", help="run periodic", action="store_true", default=bool(os.environ.get('SCALR_PERIODIC', False)))
+    parser.add_argument("--interval", help="set interval in minutes", type=int, default=int(os.environ.get('SCALR_INTERVAL', 1)))
+    parser.add_argument("--version", help="show version", action="store_true")
+    args = parser.parse_args()
 
-@app.get("/")
-async def root():
-    result = read_from_db()
-    return result
+    if args.version:
+        print(f"version {__version__}")
+        sys.exit(0)
 
+    log.info(f"Starting, version {__version__}")
 
-@app.get("/version")
-async def root():
-    return { 'verison': __version__ }
-
-
-def main():
-    uvicorn.run(
-        "scalr.app:app",
-        host=os.getenv('SCALR_HOST', '127.0.0.1'),
-        port=int(os.getenv('SCALR_PORT', 5000)),
-        log_level="info"
-    )
-
+    if args.periodic:
+        try:
+            run_periodic(args.interval)
+        except KeyboardInterrupt:
+            print("")
+            log.info(f"Stopping...")
+            schedule.clear()
+            log.info(f"done")
+            pass
+    else:
+        app()
 
 if __name__ == "__main__":
     main()
