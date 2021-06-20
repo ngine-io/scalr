@@ -47,9 +47,9 @@ def app() -> None:
         log.error(ex)
         sys.exit(1)
 
-def run_periodic(interval: int = 1) -> None:
-    log.info(f"Running periodic in intervals of {interval} minute")
-    schedule.every(interval).minutes.do(app)
+def run_periodic(interval: int = 60) -> None:
+    log.info(f"Running periodic in intervals of {interval}s")
+    schedule.every(interval).seconds.do(app)
     time.sleep(1)
     schedule.run_all()
     while True:
@@ -60,7 +60,7 @@ def run_periodic(interval: int = 1) -> None:
 def main() -> None:
     parser: ArgumentParser = ArgumentParser()
     parser.add_argument("--periodic", help="run periodic", action="store_true", default=bool(os.environ.get('SCALR_PERIODIC', False)))
-    parser.add_argument("--interval", help="set interval in minutes", type=int, default=int(os.environ.get('SCALR_INTERVAL', 1)))
+    parser.add_argument("--interval", help="set interval in seconds", type=int, default=int(os.environ.get('SCALR_INTERVAL', 60)))
     parser.add_argument("--version", help="show version", action="store_true")
     args = parser.parse_args()
 

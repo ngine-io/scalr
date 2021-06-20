@@ -95,7 +95,7 @@ class ScalrBase:
             raise Exception(f"error: min {self.min} > max {self.max}")
 
         current_size = self.get_current_size()
-        diff = self.calc_diff(factor=factor, current_size=current_size)
+        diff: int = self.calc_diff(factor=factor, current_size=current_size)
 
         if diff == 0:
             log.info(f"no action taken")
@@ -119,7 +119,7 @@ class ScalrBase:
             for i in range(self.cooldown):
                 print(f"cooling down: {i}\r", end='', flush=True)
                 time.sleep(1)
-            print("\r", end='', flush=True)
+            print("", flush=True)
 
     def scale_up(self, diff: int):
         raise NotImplementedError
