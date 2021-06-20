@@ -8,4 +8,4 @@ dist
 *.pyc
 *.json
 site
-config.yaml
+config.yml

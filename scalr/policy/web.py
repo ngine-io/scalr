@@ -26,7 +26,7 @@ class WebPolicy(PolicyBase):
 
     def get_scaling_factor(self) -> float:
         current = self._run_query()
-        log.info(f"Current meric: {current}")
+        log.info(f"Current metric: {current}")
         log.info(f"Target: {self.target}")
         try:
             return current / self.target

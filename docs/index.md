@@ -28,6 +28,7 @@ A policy defines check of a target value (amount of CPU, amount of HTTP requests
 Your Cloud and policy configuration are defined by a configuration. Scalr reads its configuration on every run and can be changed inbetween runs.
 
 - Static YAML file
+- Static JSON file
 - HTTP endpoint returning JSON
 - API, configs can be changed by HTTP post (planned)
 - S3 compatible object store (planned)
@@ -45,6 +46,14 @@ pip install scalr-ngine
 
 ## Start Scalr
 
+As "one shot" to be used as cron job:
+
 ```shell
 scalr-ngine
+```
+
+As daemon:
+
+```shell
+scalr-ngine --periodic
 ```

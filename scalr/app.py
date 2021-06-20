@@ -31,7 +31,7 @@ def get_scaling_factor(policy_configs: list) -> int:
 def app() -> None:
     print("")
     try:
-        config: dict = read_config(config_source=os.getenv('SCALR_CONFIG', 'config.yaml'))
+        config: dict = read_config(config_source=os.getenv('SCALR_CONFIG', 'config.yml'))
         if not config.get('enabled', False):
             log.info(f"not enabled, aborting...")
             return

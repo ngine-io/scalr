@@ -18,7 +18,7 @@ class InfluxdbPolicy(PolicyBase):
         rs = client.query(self.query)
         points = list(rs.get_points(measurement=self.config.get('measurement'), tags=self.config.get('tags', {})))
 
-        log.info(f"Current meric: {current}")
+        log.info(f"Current metric: {current}")
         log.info(f"Target: {self.target}")
         try:
             return current / self.target
