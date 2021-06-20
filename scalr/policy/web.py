@@ -16,6 +16,7 @@ class WebPolicy(PolicyBase):
         while retries > 0:
             try:
                 r = requests.get(url, headers=headers, timeout=timeout)
+                r.raise_for_status
                 return r.json().get(key, 1)
             except Exception as e:
                 log.error(f"Error {e}")
