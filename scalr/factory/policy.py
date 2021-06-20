@@ -1,5 +1,5 @@
 from scalr.log import log
-from scalr import Factory
+from scalr.factory import Factory
 from scalr.model.policy import Policy
 
 from scalr.policy.random import RandomPolicy
