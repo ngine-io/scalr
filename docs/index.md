@@ -1,6 +1,6 @@
 # Scalr - Autoscaling for Clouds
 
-Scalr allows to scale Cloud instances based on policy checks in a configurable interval. Scalr has 3 pluggable interfaces: config, cloud, policy.
+Scalr allows to scale Cloud instances based on policy checks in a configurable interval. Scalr has 2 pluggable interfaces: cloud, policy.
 
 ## Cloud Plugins
 
@@ -23,17 +23,13 @@ A policy defines check of a target value (amount of CPU, amount of HTTP requests
 - [Prometheus](https://prometheus.io) (planned)
 - [InfluxDB](https://www.influxdata.com/) (planned)
 
-## Config Interfaces / Plugins
+## Config Interfaces
 
 Your Cloud and policy configuration are defined by a configuration. Scalr reads its configuration on every run and can be changed inbetween runs.
 
 - Static YAML file
 - Static JSON file
 - HTTP endpoint returning JSON
-- API, configs can be changed by HTTP post (planned)
-- S3 compatible object store (planned)
-- [etcd](https://etcd.io) (planned)
-- [consul](https://www.consul.io) (planned)
 
 ## Install
 

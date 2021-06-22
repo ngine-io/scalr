@@ -9,6 +9,8 @@ Scale configuration is made by creating a `config.yml` or whatever file `SCALR_C
 
 ```yaml
 ---
+name: my scaling config
+
 # Whether this config is enabled or disabled
 enabled: true
 
@@ -26,7 +28,7 @@ max: 2
 max_step_down: 1
 
 # See Policy configs
-policy: []
+policies: []
 
 # See Launch config
 kind: ...
