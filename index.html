@@ -248,8 +248,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#config-interfaces-plugins" class="md-nav__link">
-    Config Interfaces / Plugins
+  <a href="#config-interfaces" class="md-nav__link">
+    Config Interfaces
   </a>
   
 </li>
@@ -397,8 +397,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#config-interfaces-plugins" class="md-nav__link">
-    Config Interfaces / Plugins
+  <a href="#config-interfaces" class="md-nav__link">
+    Config Interfaces
   </a>
   
 </li>
@@ -435,7 +435,7 @@
                 
                 
                 <h1 id="scalr-autoscaling-for-clouds">Scalr - Autoscaling for Clouds</h1>
-<p>Scalr allows to scale Cloud instances based on policy checks in a configurable interval. Scalr has 3 pluggable interfaces: config, cloud, policy.</p>
+<p>Scalr allows to scale Cloud instances based on policy checks in a configurable interval. Scalr has 2 pluggable interfaces: cloud, policy.</p>
 <h2 id="cloud-plugins">Cloud Plugins</h2>
 <p>This is the connector to the API of your Cloud provider. It reads current available servers of your Scalr group and scales up and down based on a calculation factor received from one or more policies:</p>
 <ul>
@@ -455,16 +455,12 @@
 <li><a href="https://prometheus.io">Prometheus</a> (planned)</li>
 <li><a href="https://www.influxdata.com/">InfluxDB</a> (planned)</li>
 </ul>
-<h2 id="config-interfaces-plugins">Config Interfaces / Plugins</h2>
+<h2 id="config-interfaces">Config Interfaces</h2>
 <p>Your Cloud and policy configuration are defined by a configuration. Scalr reads its configuration on every run and can be changed inbetween runs.</p>
 <ul>
 <li>Static YAML file</li>
 <li>Static JSON file</li>
 <li>HTTP endpoint returning JSON</li>
-<li>API, configs can be changed by HTTP post (planned)</li>
-<li>S3 compatible object store (planned)</li>
-<li><a href="https://etcd.io">etcd</a> (planned)</li>
-<li><a href="https://www.consul.io">consul</a> (planned)</li>
 </ul>
 <h2 id="install">Install</h2>
 <div class="admonition warning">
