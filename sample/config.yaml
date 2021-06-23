@@ -1,57 +1,83 @@
 ---
 # NOTE: the name is used to prefix and identify resources by a tag.
 # If changed, existing resources won't be scaled and must be deleted manually.
+---
 name: app
 
-# Whether the scaling is enabled/disabled, default disabled
 enabled: true
 
 dry_run: false
 
-cooldown: 60
+cooldown: 300
 
 min: 0
 max: 3
-
-max_step_down: 2
+max_step_down: 1
 scale_down_selection: oldest
 
-policy:
+
+time_rules:
+  - name: lights off
+    weekdays:
+      - Sun
+      - Sat
+    times_of_day:
+      - 23:30-08:00
+    days_of_year:
+      - Dec24
+    configs:
+      min: 0
+      max: 0
+      max_step_down: 10
+
+policies:
   ## Query a web endpoint.
   ## A JSON return o {"metric": <int>} is expected in this case
-- name: my check over web
-  target: 5
-  source: web
-  query: http://localhost:8000/target.json
-  config:
-    headers:
-      Authorization: Bearer xyz
-    key: metric
-
-# - name: random one to ten
+# - name: my check over web
 #   target: 5
-#   source: random
+#   source: web
+#   query: http://localhost:8000/target.json
 #   config:
-#     start: 1
-#     stop: 10
+#     headers:
+#       Authorization: Bearer xyz
+#     key: metric
 
-kind: digitalocean
+# - name: influxdb
+#   target: 5
+#   source: influxdb
+#   config:
+#     host: localhost
+#     port: 8086
+#     database: metrics
+#     username: root
+#     passwort: root
+#     measurement: cpu
+#     tags: {}
+
+- name: random one to ten
+  target: 5
+  source: random
+  config:
+    start: 1
+    stop: 10
+
+kind: cloudscale_ch
 launch_config:
-# Cloudscale
-  # flavor: flex-2
-  # image: debian-10
-  # zone: lpg1
-  # tags:
-  #   project: gemini
-  # ssh_keys:
-  #   - ssh-rsa AAAAB...
-  # user_data: |
-  #   #cloud-config
-  #   manage_etc_hosts: true
-  #   package_update: true
-  #   package_upgrade: true
-  #   packages:
-  #     - nginx
+# Cloudscale.ch
+  flavor: flex-2
+  image: debian-10
+  zone: lpg1
+  tags:
+    project: gemini
+  ssh_keys:
+    - ssh-ed25519 AAAAC3N
+  user_data: |
+    #cloud-config
+    manage_etc_hosts: true
+    package_update: true
+    package_upgrade: true
+    packages:
+      - nginx
 
 # Hetzner Cloud
   # server_type: cx11
