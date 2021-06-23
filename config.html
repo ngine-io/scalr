@@ -404,7 +404,24 @@
 <span class="nt">max</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
 
 <span class="c1"># Define how many instances can be scaled down at once.</span>
+<span class="c1">#  0: no scaling down</span>
+<span class="c1"># -1: no limit.</span>
 <span class="nt">max_step_down</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+
+<span class="c1"># Optional: time based rules (first match)</span>
+<span class="nt">time_rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lights off</span>
+    <span class="nt">weekdays</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Sun</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Sat</span>
+    <span class="nt">times_of_day</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">23:30-08:00</span>
+    <span class="nt">days_of_year</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Dec24</span>
+    <span class="nt">configs</span><span class="p">:</span>
+      <span class="nt">min</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+      <span class="nt">max</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+      <span class="nt">max_step_down</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
 
 <span class="c1"># See Policy configs</span>
 <span class="nt">policies</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
