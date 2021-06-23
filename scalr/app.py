@@ -3,6 +3,7 @@ import sys
 
 import time
 import schedule
+from datetime import datetime
 from argparse import ArgumentParser
 
 from scalr.version import __version__
@@ -28,6 +29,7 @@ def get_scaling_factor(policy_configs: list) -> int:
 
     return scaling_factor
 
+
 def app() -> None:
     print("")
     try:
@@ -36,8 +38,52 @@ def app() -> None:
             log.info(f"not enabled, aborting...")
             return
 
+        for time_rule in config.get('time_rules', []):
+            if 'days_of_year' in time_rule:
+                today = datetime.today().strftime('%b%d')
+                if today in time_rule['days_of_year']:
+                    log.info(f"Today '{today}' in days_of_year of time rule '{time_rule['name']}'")
+                    config.update(**time_rule['configs'])
+                    break
+
+            if 'weekdays' in time_rule:
+                today = datetime.today().strftime('%a')
+                if today in time_rule['weekdays']:
+                    log.info(f"Today '{today}' in weekday of time rule '{time_rule['name']}'")
+                    config.update(**time_rule['configs'])
+                    break
+
+            if 'times_of_day' in time_rule:
+                now = datetime.now().time()
+                for time_range in time_rule['times_of_day']:
+                    start, end = time_range.split('-')
+                    start_time = datetime.strptime(start, "%H:%M").time()
+                    end_time = datetime.strptime(end, "%H:%M").time()
+                    if start_time > end_time:
+                        end_of_day = datetime.strptime("23:59", "%H:%M").time()
+                        if start_time <= now <= end_of_day:
+                            log.info(f"Exclude {start_time}-{end_time}")
+                            log.info(f"{now} in time of day of time rule '{time_rule['name']}'")
+                            config.update(**time_rule['configs'])
+                            break
+
+                        start_of_day = datetime.strptime("00:01", "%H:%M").time()
+                        if start_of_day <= now <= end_time:
+                            log.info(f"Exclude {start_time}-{end_time}")
+                            log.info(f"{now} in time of day of time rule '{time_rule['name']}'")
+                            config.update(**time_rule['configs'])
+                            break
+
+                    else:
+                        if start_time <= now <= end_time:
+                            log.info(f"Exclude {start_time}-{end_time}")
+                            log.info(f"{now} in time of day time rule '{time_rule['name']}'")
+                            config.update(**time_rule['configs'])
+                            break
+
         scale_factory = ScalrFactory(config=config)
         scalr = scale_factory.get_instance(config['kind'])
+
         scalr.scale(
             factor=get_scaling_factor(
                 config.get('policies', [])

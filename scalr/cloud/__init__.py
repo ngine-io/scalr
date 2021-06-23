@@ -85,7 +85,7 @@ class ScalrBase:
         diff = desired - current_size
         log.info(f"calculated diff: {diff}")
 
-        if diff < 0 and self.max_step_down < diff * -1:
+        if diff < 0 and 0 <= self.max_step_down < diff * -1:
             log.info(f"hit max down step: {self.max_step_down}")
             diff = self.max_step_down * -1
         return diff

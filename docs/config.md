@@ -25,7 +25,24 @@ min: 0
 max: 2
 
 # Define how many instances can be scaled down at once.
+#  0: no scaling down
+# -1: no limit.
 max_step_down: 1
+
+# Optional: time based rules (first match)
+time_rules:
+  - name: lights off
+    weekdays:
+      - Sun
+      - Sat
+    times_of_day:
+      - 23:30-08:00
+    days_of_year:
+      - Dec24
+    configs:
+      min: 0
+      max: 0
+      max_step_down: 10
 
 # See Policy configs
 policies: []
