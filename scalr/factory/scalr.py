@@ -9,8 +9,7 @@ from scalr.cloud.hcloud import HcloudScalr
 
 class ScalrFactory(Factory):
 
-    def __init__(self, config: dict = dict()):
-        super().__init__(config=config)
+    def __init__(self):
         self.cloud_classes = {
             'cloudscale_ch': CloudscaleChScalr,
             'cloudstack': CloudstackScalr,
@@ -18,5 +17,5 @@ class ScalrFactory(Factory):
             'hcloud': HcloudScalr,
         }
 
-    def parse(self) -> Scalr:
-        return Scalr(**self.config)
+    def parse(self, config: dict) -> Scalr:
+        return Scalr(**config)

@@ -4,28 +4,41 @@
 ---
 name: app
 
-enabled: true
+base_rule:
+  enabled: true
+  dry_run: false
+  min: 2
+  max: 5
+  max_step_down: 1
+  scale_down_selection: oldest
+  cooldown: 60
 
-dry_run: false
-
-cooldown: 300
-
-min: 0
-max: 3
-max_step_down: 1
-scale_down_selection: oldest
-
-
+# Base rule can be overwritten by time based rules
 time_rules:
-  - name: lights off
+  - name: Dry run on Tuesday morning during maintenance window
+    # Wed at 01:00-04:00
+    weekdays:
+      - Tue
+    times_of_day:
+      - 01:00-04:00
+    # Do not evaluate later rules
+    on_match: break
+    rule:
+      dry_run: true
+
+  - name: Lights off at night
+    times_of_day:
+      - 23:30-08:00
+    rule:
+      min: 0
+      max: 0
+      max_step_down: 10
+
+  - name: Lights off on weekends
     weekdays:
       - Sun
       - Sat
-    times_of_day:
-      - 23:30-08:00
-    days_of_year:
-      - Dec24
-    configs:
+    rule:
       min: 0
       max: 0
       max_step_down: 10
