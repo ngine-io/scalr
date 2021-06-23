@@ -41,7 +41,6 @@ def app() -> None:
 
         log.info(f"Processing time rules...")
         for time_rule in config.get('time_rules', []):
-            print(time_rule)
             if 'days_of_year' in time_rule:
                 today = datetime.today().strftime('%b%d')
                 if today not in time_rule['days_of_year']:
