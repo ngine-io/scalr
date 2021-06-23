@@ -1,3 +1,9 @@
+![license](https://img.shields.io/pypi/l/scalr-ngine.svg)
+![python versions](https://img.shields.io/pypi/pyversions/scalr-ngine.svg)
+![status](https://img.shields.io/pypi/status/scalr-ngine.svg)
+[![pypi version](https://img.shields.io/pypi/v/scalr-ngine.svg)](https://pypi.org/project/scalr-ngine/)
+![PyPI - Downloads](https://img.shields.io/pypi/dw/scalr-ngine)
+
 # Scalr - Autoscaling for Clouds
 
 Scale Cloud instances based on policy checks in a configurable interval.
