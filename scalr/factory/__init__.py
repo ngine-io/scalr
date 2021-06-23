@@ -3,23 +3,19 @@ from scalr.log import log
 
 class Factory:
 
-    def __init__(self, config: dict = dict()):
-        self.config = config
+    def __init__(self):
         self.cloud_classes = dict()
 
-    def parse(self, data) -> dict:
+    def parse(self, config: dict):
         raise NotImplementedError()
 
-    def get_instance(self, name: str) -> object:
+    def get_instance(self, name: str, config: dict) -> object:
         try:
-            # Validate config
-            Config = self.parse()
-            log.info(f"Parsed config for policy {name}")
+            log.info(f"Parsed config for {name}")
 
             obj_class = self.cloud_classes[name]
             obj = obj_class()
-            obj.configure(Config)
+            obj.configure(self.parse(config=config))
             return obj
         except KeyError as e:
-            msg = f"{e} not implemented"
-            raise NotImplementedError(msg)
+            raise NotImplementedError(f"{e} not implemented")

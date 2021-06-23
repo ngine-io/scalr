@@ -14,8 +14,8 @@ def test_not_implementend_policy():
                 'stop': 10,
             }
         }
-        policy_factory = PolicyFactory(config)
-        policy = policy_factory.get_instance('does-not-exist')
+        policy_factory = PolicyFactory()
+        policy_factory.get_instance('does-not-exist', config)
 
 
 def test_random_policy():
@@ -30,8 +30,8 @@ def test_random_policy():
         }
     }
 
-    policy_factory = PolicyFactory(config)
-    policy = policy_factory.get_instance('random')
+    policy_factory = PolicyFactory()
+    policy = policy_factory.get_instance('random', config)
 
     factor = policy.get_scaling_factor()
     assert factor <= 1

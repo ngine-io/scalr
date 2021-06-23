@@ -10,39 +10,51 @@ Scale configuration is made by creating a `config.yml` or whatever file `SCALR_C
 ```yaml
 ---
 name: my scaling config
+base_rule:
+  # Whether this config is enabled or disabled
+  enabled: true
 
-# Whether this config is enabled or disabled
-enabled: true
+  # Allows to run Scalr without any actions taken.
+  dry_run: false
 
-# Allows to run Scalr without any actions taken.
-dry_run: false
+  # Time to let Scalr hold on further actions after an action was taken.
+  cooldown: 120
 
-# Time to let Scalr hold on further actions after an action was taken.
-cooldown: 120
+  # Range in which Scalr will scale.
+  min: 2
+  max: 5
 
-# Range in which Scalr will scale.
-min: 0
-max: 2
-
-# Define how many instances can be scaled down at once.
-#  0: no scaling down
-# -1: no limit.
-max_step_down: 1
+  # Define how many instances can be scaled down at once.
+  #  0: no scaling down
+  # -1: no limit.
+  max_step_down: 1
 
 # Optional: time based rules (first match)
 time_rules:
-  - name: lights off
+  - name: More capacity on Black Friday 2021
+    days_of_year:
+      - Nov26
+    # Do not evaluate further rules on match
+    on_match: break
+    rule:
+      min: 3
+      max: 8
+
+  - name: Turn off scaling during weekly maintenance
+    days_of_year:
+      - Wed
+    times_of_day:
+      - 01:00-04:00
+    rule:
+      enabled: false
+
+  - name: Allow Lights off on weekends
     weekdays:
       - Sun
       - Sat
-    times_of_day:
-      - 23:30-08:00
-    days_of_year:
-      - Dec24
-    configs:
+    rule:
       min: 0
-      max: 0
-      max_step_down: 10
+      max_step_down: 2
 
 # See Policy configs
 policies: []

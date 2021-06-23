@@ -21,9 +21,8 @@ class FakeScalr(ScalrBase):
 
 def test_not_implementend_scalr():
     with pytest.raises(NotImplementedError, match=r".*does-not-exist.*"):
-        config = {'kind': 'cloud'}
-        scale_factory = ScalrFactory(config)
-        scalr = scale_factory.get_instance('does-not-exist')
+        scale_factory = ScalrFactory()
+        scale_factory.get_instance('does-not-exist', dict())
 
 
 def test_fake_scalr_up():
