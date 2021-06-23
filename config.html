@@ -389,39 +389,51 @@
 <h2 id="common-config">Common Config</h2>
 <div class="codehilite"><pre><span></span><code><span class="nn">---</span>
 <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my scaling config</span>
+<span class="nt">base_rule</span><span class="p">:</span>
+  <span class="c1"># Whether this config is enabled or disabled</span>
+  <span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 
-<span class="c1"># Whether this config is enabled or disabled</span>
-<span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="c1"># Allows to run Scalr without any actions taken.</span>
+  <span class="nt">dry_run</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 
-<span class="c1"># Allows to run Scalr without any actions taken.</span>
-<span class="nt">dry_run</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="c1"># Time to let Scalr hold on further actions after an action was taken.</span>
+  <span class="nt">cooldown</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">120</span>
 
-<span class="c1"># Time to let Scalr hold on further actions after an action was taken.</span>
-<span class="nt">cooldown</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">120</span>
+  <span class="c1"># Range in which Scalr will scale.</span>
+  <span class="nt">min</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+  <span class="nt">max</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
 
-<span class="c1"># Range in which Scalr will scale.</span>
-<span class="nt">min</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
-<span class="nt">max</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
-
-<span class="c1"># Define how many instances can be scaled down at once.</span>
-<span class="c1">#  0: no scaling down</span>
-<span class="c1"># -1: no limit.</span>
-<span class="nt">max_step_down</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+  <span class="c1"># Define how many instances can be scaled down at once.</span>
+  <span class="c1">#  0: no scaling down</span>
+  <span class="c1"># -1: no limit.</span>
+  <span class="nt">max_step_down</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
 
 <span class="c1"># Optional: time based rules (first match)</span>
 <span class="nt">time_rules</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lights off</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">More capacity on Black Friday 2021</span>
+    <span class="nt">days_of_year</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Nov26</span>
+    <span class="c1"># Do not evaluate further rules on match</span>
+    <span class="nt">on_match</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">break</span>
+    <span class="nt">rule</span><span class="p">:</span>
+      <span class="nt">min</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+      <span class="nt">max</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
+
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Turn off scaling during weekly maintenance</span>
+    <span class="nt">days_of_year</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Wed</span>
+    <span class="nt">times_of_day</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">01:00-04:00</span>
+    <span class="nt">rule</span><span class="p">:</span>
+      <span class="nt">enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Allow Lights off on weekends</span>
     <span class="nt">weekdays</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Sun</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Sat</span>
-    <span class="nt">times_of_day</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">23:30-08:00</span>
-    <span class="nt">days_of_year</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Dec24</span>
-    <span class="nt">configs</span><span class="p">:</span>
+    <span class="nt">rule</span><span class="p">:</span>
       <span class="nt">min</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
-      <span class="nt">max</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
-      <span class="nt">max_step_down</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+      <span class="nt">max_step_down</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
 
 <span class="c1"># See Policy configs</span>
 <span class="nt">policies</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
