@@ -8,3 +8,4 @@ requests
 influxdb
 schedule
 pydantic
+prometheus_client
