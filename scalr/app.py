@@ -5,6 +5,7 @@ import time
 import schedule
 from datetime import datetime
 from argparse import ArgumentParser
+from prometheus_client import start_http_server, Gauge
 
 from scalr.version import __version__
 from scalr.log import log
@@ -12,6 +13,12 @@ from scalr.config import read_config
 
 from scalr.factory.scalr import ScalrFactory
 from scalr.factory.policy import PolicyFactory
+
+metric_min = Gauge('scalr_min', 'Min amount of resources')
+metric_max = Gauge('scalr_max', 'Max amount of resources')
+metric_desired = Gauge('scalr_desired', 'Desired amount of resources')
+metric_current = Gauge('scalr_current', 'Current amount of resources')
+metric_max_step_down = Gauge('scalr_max_step_down', 'Max step for scaling down')
 
 def get_scaling_factor(policy_configs: list) -> int:
     scaling_factor: int = 0
@@ -84,9 +91,6 @@ def process_time_rules(time_rules: list, base_rule: dict) -> dict:
 
     return base_rule
 
-
-
-
 def app() -> None:
     print("")
     try:
@@ -115,6 +119,13 @@ def app() -> None:
                 policy_configs=config.get('policies', [])
             )
         )
+
+        # Set exporter metrics
+        metric_min.set(scalr.min)
+        metric_max.set(scalr.max)
+        metric_current.set(scalr.current)
+        metric_desired.set(scalr.desired)
+        metric_max_step_down.set(scalr.max_step_down)
     except Exception as ex:
         log.error(ex)
         sys.exit(1)
@@ -144,6 +155,7 @@ def main() -> None:
 
     if args.periodic:
         try:
+            start_http_server(int(os.environ.get('SCALR_PROMETHEUS_EXPORTER_PORT', 8000)))
             run_periodic(args.interval)
         except KeyboardInterrupt:
             print("")
