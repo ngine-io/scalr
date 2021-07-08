@@ -8,6 +8,7 @@ Setup can be initialised either by ENV vars or by providing a `.env` file:
 SCALR_INTERVAL=20
 SCALR_LOG_LEVEL=DEBUG
 SCALR_CONFIG=./config.yml
+SCALR_PROMETHEUS_EXPORTER_PORT=8000
 ```
 
 ## Cloudscale.ch API token
