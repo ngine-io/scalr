@@ -14,15 +14,14 @@ The target in is the metric we want to reach. A source metric returned higher th
 
 Query a Prometheus endpoint.
 
-!!! note
-     Not yet implemented.
-
 ```yaml
 policy:
-- name: Get Loadbalancer metrics
-  target: 1000
+- name: CPU avg load < 60%
+  target: 60
   source: prometheus
-  query: "scalar(avg(haproxy_server_current_sessions))"
+  config:
+    url: http://prometheus.example.com:9090
+    query: '100 - (avg by (job) (rate(node_cpu_seconds_total{mode="idle", instance=~"cluster-node.*"}[10m])) * 100)'
 ```
 
 ## InfluxDB Policy

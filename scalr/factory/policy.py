@@ -3,6 +3,7 @@ from scalr.model.policy import Policy
 
 from scalr.policy.random import RandomPolicy
 from scalr.policy.web import WebPolicy
+from scalr.policy.prometheus import PrometheusPolicy
 
 
 class PolicyFactory(Factory):
@@ -11,6 +12,7 @@ class PolicyFactory(Factory):
         self.cloud_classes = {
             'random': RandomPolicy,
             'web': WebPolicy,
+            'prometheus': PrometheusPolicy,
         }
 
     def parse(self, config: dict) -> Policy:
