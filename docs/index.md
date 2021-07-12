@@ -34,7 +34,7 @@ Your Cloud and policy configuration are defined by a configuration. Scalr reads 
 ## Install
 
 !!! warning
-    Scalr is heavily under development.
+    Scalr is in beta.
 
 ```shell
 pip install scalr-ngine
