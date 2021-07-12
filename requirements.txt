@@ -9,3 +9,4 @@ influxdb
 schedule
 pydantic
 prometheus_client
+prometheus-api-client

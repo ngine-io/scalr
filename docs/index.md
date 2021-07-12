@@ -20,7 +20,7 @@ A policy defines check of a target value (amount of CPU, amount of HTTP requests
 
 - HTTP endpoint returning JSON
 - Random Metric (for testing)
-- [Prometheus](https://prometheus.io) (planned)
+- [Prometheus](https://prometheus.io)
 - [InfluxDB](https://www.influxdata.com/) (planned)
 
 ## Config Interfaces
