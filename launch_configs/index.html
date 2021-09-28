@@ -9,19 +9,19 @@
       
       
       
-      <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.10">
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.3.0">
     
     
       
-        <title>Policy Configs - Scalr - Autoscaling for Clouds</title>
+        <title>Launch Configs - Scalr - Autoscaling for Clouds</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.1fe995fd.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.8b42a75e.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.f1a3b89f.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
         
           
           
@@ -57,7 +57,7 @@
     <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="">
   
     
-    <script>function __prefix(e){return new URL(".",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -65,7 +65,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#policy-configs" class="md-skip">
+        <a href="#launch-configs" class="md-skip">
           Skip to content
         </a>
       
@@ -74,9 +74,11 @@
       
     </div>
     
-      <header class="md-header" data-md-component="header">
+      
+
+<header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="Scalr - Autoscaling for Clouds" class="md-header__button md-logo" aria-label="Scalr - Autoscaling for Clouds" data-md-component="logo">
+    <a href=".." title="Scalr - Autoscaling for Clouds" class="md-header__button md-logo" aria-label="Scalr - Autoscaling for Clouds" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -95,7 +97,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Policy Configs
+              Launch Configs
             
           </span>
         </div>
@@ -112,14 +114,18 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
       </label>
-      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
-      </button>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
@@ -149,11 +155,14 @@
       </div>
     
   </nav>
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
+        
+          
         
       
       <main class="md-main" data-md-component="main">
@@ -169,7 +178,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="Scalr - Autoscaling for Clouds" class="md-nav__button md-logo" aria-label="Scalr - Autoscaling for Clouds" data-md-component="logo">
+    <a href=".." title="Scalr - Autoscaling for Clouds" class="md-nav__button md-logo" aria-label="Scalr - Autoscaling for Clouds" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -201,7 +210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="index.html" class="md-nav__link">
+      <a href=".." class="md-nav__link">
         Home
       </a>
     </li>
@@ -216,7 +225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="setup.html" class="md-nav__link">
+      <a href="../setup/" class="md-nav__link">
         Setup
       </a>
     </li>
@@ -238,10 +247,14 @@
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
-      <label class="md-nav__link" for="__nav_3">
-        Configs
-        <span class="md-nav__icon md-icon"></span>
-      </label>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Configs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <nav class="md-nav" aria-label="Configs" data-md-level="1">
         <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
@@ -250,18 +263,35 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
+              
   
   
   
     <li class="md-nav__item">
-      <a href="config.html" class="md-nav__link">
+      <a href="../config/" class="md-nav__link">
         Common
       </a>
     </li>
   
 
+            
           
             
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy_configs/" class="md-nav__link">
+        Policy Configs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
   
   
     
@@ -276,12 +306,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Policy Configs
+          Launch Configs
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="policy_configs.html" class="md-nav__link md-nav__link--active">
-        Policy Configs
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Launch Configs
       </a>
       
         
@@ -299,36 +329,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#metric-target" class="md-nav__link">
-    Metric Target
+  <a href="#cloudscalech" class="md-nav__link">
+    Cloudscale.ch
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#prometheus-policy" class="md-nav__link">
-    Prometheus Policy
+  <a href="#apache-cloudstack" class="md-nav__link">
+    Apache CloudStack
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#influxdb-policy" class="md-nav__link">
-    InfluxDB Policy
+  <a href="#digitalocean" class="md-nav__link">
+    DigitalOcean
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#web-policy" class="md-nav__link">
-    Web Policy
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#random-policy" class="md-nav__link">
-    Random Policy
+  <a href="#hetzner-cloud" class="md-nav__link">
+    Hetzner Cloud
   </a>
   
 </li>
@@ -340,18 +363,7 @@
     </li>
   
 
-          
             
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="launch_configs.html" class="md-nav__link">
-        Launch Configs
-      </a>
-    </li>
-  
-
           
         </ul>
       </nav>
@@ -385,36 +397,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#metric-target" class="md-nav__link">
-    Metric Target
+  <a href="#cloudscalech" class="md-nav__link">
+    Cloudscale.ch
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#prometheus-policy" class="md-nav__link">
-    Prometheus Policy
+  <a href="#apache-cloudstack" class="md-nav__link">
+    Apache CloudStack
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#influxdb-policy" class="md-nav__link">
-    InfluxDB Policy
+  <a href="#digitalocean" class="md-nav__link">
+    DigitalOcean
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#web-policy" class="md-nav__link">
-    Web Policy
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#random-policy" class="md-nav__link">
-    Random Policy
+  <a href="#hetzner-cloud" class="md-nav__link">
+    Hetzner Cloud
   </a>
   
 </li>
@@ -431,69 +436,91 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/ngine-io/scalr/edit/main/docs/policy_configs.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/ngine-io/scalr/edit/main/docs/launch_configs.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="policy-configs">Policy Configs</h1>
-<p>Policies define if and how much to scale.</p>
-<h2 id="metric-target">Metric Target</h2>
-<p>The target in is the metric we want to reach. A source metric returned higher than this target will result in scaling up, a lower to scaling down.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<p>Given a target of 5, a source metric returned of 10 will results in a scaling factor 2.0.
-With 2 instances already running, a factor 2 will scale to 4 instances (2 x 2.0), except the max allow instances is lower than 4.</p>
+                <h1 id="launch-configs">Launch configs</h1>
+<p>Launch config to be used for new instances.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Changing a launch config have no affect to running Cloud instances. But this may change in the future.</p>
 </div>
-<h2 id="prometheus-policy">Prometheus Policy</h2>
-<p>Query a Prometheus endpoint.</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">policy</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">CPU avg load &lt; 60%</span>
-  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
-  <span class="nt">source</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prometheus</span>
-  <span class="nt">config</span><span class="p">:</span>
-    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://prometheus.example.com:9090</span>
-    <span class="nt">query</span><span class="p">:</span> <span class="s">&#39;100</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">(avg</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">(job)</span><span class="nv"> </span><span class="s">(rate(node_cpu_seconds_total{mode=&quot;idle&quot;,</span><span class="nv"> </span><span class="s">instance=~&quot;cluster-node.*&quot;}[10m]))</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">100)&#39;</span>
+<h2 id="cloudscalech">Cloudscale.ch</h2>
+<div class="codehilite"><pre><span></span><code><span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cloudscale_ch</span>
+<span class="nt">launch_config</span><span class="p">:</span>
+  <span class="nt">flavor</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">flex-2</span>
+  <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian-10</span>
+  <span class="nt">zone</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lpg1</span>
+  <span class="nt">tags</span><span class="p">:</span>
+    <span class="nt">project</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gemini</span>
+  <span class="nt">ssh_keys</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ssh-rsa AAAA...</span>
+  <span class="nt">user_data</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">#cloud-config</span>
+    <span class="no">manage_etc_hosts: true</span>
+    <span class="no">package_update: true</span>
+    <span class="no">package_upgrade: true</span>
+    <span class="no">packages:</span>
+      <span class="no">- nginx</span>
 </code></pre></div>
 
-<h2 id="influxdb-policy">InfluxDB Policy</h2>
-<p>Query an InfluxDB endpoint.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Not yet implemented.</p>
-</div>
-<div class="codehilite"><pre><span></span><code><span class="nt">policy</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Get CPU metrics</span>
-  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">70</span>
-  <span class="nt">source</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">influxdb</span>
-  <span class="nt">query</span><span class="p">:</span> <span class="s">&quot;select</span><span class="nv"> </span><span class="s">value</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">cpu_load_short;&quot;</span>
+<h2 id="apache-cloudstack">Apache CloudStack</h2>
+<div class="codehilite"><pre><span></span><code><span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cloudstack</span>
+<span class="nt">launch_config</span><span class="p">:</span>
+  <span class="nt">service_offering</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Micro</span>
+  <span class="nt">template</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Linux Debian 10</span>
+  <span class="nt">zone</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">de-xy-1</span>
+  <span class="nt">ssh_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-key</span>
+  <span class="nt">tags</span><span class="p">:</span>
+    <span class="nt">project</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gemini</span>
+  <span class="nt">root_disk_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+  <span class="nt">user_data</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">#cloud-config</span>
+    <span class="no">manage_etc_hosts: true</span>
+    <span class="no">package_update: true</span>
+    <span class="no">package_upgrade: true</span>
+    <span class="no">packages:</span>
+      <span class="no">- nginx</span>
 </code></pre></div>
 
-<h2 id="web-policy">Web Policy</h2>
-<p>Query a web endpoint.</p>
-<p>A JSON return <code>{"metric": &lt;int&gt;}</code> is expected in this case.</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">policy</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">get metric from web</span>
-  <span class="nt">source</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">web</span>
-  <span class="nt">query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:8000/target.json</span>
-  <span class="nt">config</span><span class="p">:</span>
-    <span class="c1"># Optional headers</span>
-    <span class="nt">headers</span><span class="p">:</span>
-      <span class="nt">Authorization</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Bearer xyz</span>
-    <span class="c1"># Optional default key &#39;data&#39;</span>
-    <span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">metric</span>
-  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+<h2 id="digitalocean">DigitalOcean</h2>
+<div class="codehilite"><pre><span></span><code><span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">digitalocean</span>
+<span class="nt">launch_config</span><span class="p">:</span>
+  <span class="nt">size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">s-1vcpu-1gb</span>
+  <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian-10-x64</span>
+  <span class="nt">region</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ams3</span>
+  <span class="nt">ssh_keys</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;b5:be:e8:...&#39;</span>
+  <span class="nt">tags</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;project:gemini&#39;</span>
+  <span class="nt">user_data</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">#cloud-config</span>
+    <span class="no">manage_etc_hosts: true</span>
+    <span class="no">package_update: true</span>
+    <span class="no">package_upgrade: true</span>
+    <span class="no">packages:</span>
+      <span class="no">- nginx</span>
 </code></pre></div>
 
-<h2 id="random-policy">Random Policy</h2>
-<p>For testing purpose, random metric to get some action.</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">policy</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">get random nonsense</span>
-  <span class="nt">source</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">random</span>
-  <span class="nt">target</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
-  <span class="nt">config</span><span class="p">:</span>
-    <span class="nt">start</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-    <span class="nt">stop</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+<h2 id="hetzner-cloud">Hetzner Cloud</h2>
+<div class="codehilite"><pre><span></span><code><span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hcloud</span>
+<span class="nt">launch_config</span><span class="p">:</span>
+  <span class="nt">server_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cx11</span>
+  <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian-10</span>
+  <span class="nt">labels</span><span class="p">:</span>
+    <span class="nt">project</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gemini</span>
+  <span class="nt">location</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fsn1</span>
+  <span class="nt">ssh_keys</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">my_key</span>
+  <span class="nt">user_data</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">#cloud-config</span>
+    <span class="no">manage_etc_hosts: true</span>
+    <span class="no">package_update: true</span>
+    <span class="no">package_upgrade: true</span>
+    <span class="no">packages:</span>
+      <span class="no">- nginx</span>
 </code></pre></div>
                 
               
@@ -514,7 +541,7 @@ With 2 instances already running, a factor 2 will scale to 4 instances (2 x 2.0)
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="config.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Common" rel="prev">
+        <a href="../policy_configs/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Policy Configs" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -523,26 +550,11 @@ With 2 instances already running, a factor 2 will scale to 4 instances (2 x 2.0)
               <span class="md-footer__direction">
                 Previous
               </span>
-              Common
+              Policy Configs
             </div>
           </div>
         </a>
       
-      
-        
-        <a href="launch_configs.html" class="md-footer__link md-footer__link--next" aria-label="Next: Launch Configs" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Launch Configs
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
       
     </nav>
   
@@ -550,10 +562,12 @@ With 2 instances already running, a factor 2 will scale to 4 instances (2 x 2.0)
     <div class="md-footer-meta__inner md-grid">
       <div class="md-footer-copyright">
         
-        Made with
-        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-          Material for MkDocs
-        </a>
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
         
       </div>
       
@@ -565,10 +579,10 @@ With 2 instances already running, a factor 2 will scale to 4 instances (2 x 2.0)
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.f8263e09.min.js", "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.ddd52ceb.min.js"></script>
+      <script src="../assets/javascripts/bundle.4fc53ad4.min.js"></script>
       
     
   </body>
