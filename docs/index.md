@@ -10,8 +10,7 @@ This is the connector to the API of your Cloud provider. It reads current availa
 - [Hetzner Cloud](https://www.hetzner.com/cloud)
 - [DigitalOcean](https://www.digitalocean.com)
 - [Apache CloudStack](https://cloudstack.apache.org)
-- [Exoscale](https://www.exoscale.com) (planned)
-- [PCextreme](https://www.pcextreme.com) (planned)
+- [Exoscale](https://www.exoscale.com)
 - [Vultr](https://www.vultr.com) (planned)
 
 ## Policy Plugins
