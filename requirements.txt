@@ -10,3 +10,4 @@ schedule
 pydantic
 prometheus_client
 prometheus-api-client
+python-json-logger
