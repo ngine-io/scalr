@@ -1,4 +1,3 @@
-import os
 from scalr.cloud import ScalrBase
 from scalr.log import log
 import digitalocean
