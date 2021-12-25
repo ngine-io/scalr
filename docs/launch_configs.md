@@ -99,7 +99,7 @@ launch_config:
   # Debian 11
   os_id: 477
   region: fra
-  ssh_key_id:
+  sshkey_id:
     - xxxxxxxx-...
   user_data: |
     #!/bin/sh
