@@ -43,3 +43,9 @@ EXOSCALE_API_SECRET=<...>
 ```ini
 HCLOUD_API_TOKEN=<...>
 ```
+
+## Vultr API key
+
+```ini
+VULTR_API_KEY=<...>
+```

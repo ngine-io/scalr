@@ -11,7 +11,7 @@ This is the connector to the API of your Cloud provider. It reads current availa
 - [DigitalOcean](https://www.digitalocean.com)
 - [Apache CloudStack](https://cloudstack.apache.org)
 - [Exoscale](https://www.exoscale.com)
-- [Vultr](https://www.vultr.com) (planned)
+- [Vultr](https://www.vultr.com)
 
 ## Policy Plugins
 

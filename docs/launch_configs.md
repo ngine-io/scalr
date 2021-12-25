@@ -89,3 +89,34 @@ launch_config:
     packages:
       - nginx
 ```
+
+## Vultr Cloud
+
+```yaml
+kind: vultr
+launch_config:
+  plan: vc2-1c-1gb
+  # Debian 11
+  os_id: 477
+  region: fra
+  ssh_key_id:
+    - xxxxxxxx-...
+  user_data: |
+    #!/bin/sh
+    echo "Hello World" > /root/hello-world.txt
+    # script_id: ...
+  # iso_id: ...
+  # snapshot_id ...
+  # enable_ipv6: true
+  # backups: enabled
+  # app_id: app_id
+  # image_id: image_id
+  # activation_email: true
+  # attach_private_network: [...]
+  # app_id: ...
+  # image_id: ...
+  # ddos_protection: true
+  # firewall_group_id: ...
+  # enable_private_network: true
+
+```

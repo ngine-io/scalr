@@ -5,6 +5,7 @@ from scalr.cloud.cloudscale_ch import CloudscaleChScalr
 from scalr.cloud.cloudstack import CloudstackScalr
 from scalr.cloud.digitalocean import DigitaloceanScalr
 from scalr.cloud.hcloud import HcloudScalr
+from scalr.cloud.vultr import VultrScalr
 
 
 class ScalrFactory(Factory):
@@ -15,6 +16,7 @@ class ScalrFactory(Factory):
             'cloudstack': CloudstackScalr,
             'digitalocean': DigitaloceanScalr,
             'hcloud': HcloudScalr,
+            'vultr': VultrScalr,
         }
 
     def parse(self, config: dict) -> Scalr:
