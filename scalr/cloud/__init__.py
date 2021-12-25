@@ -50,7 +50,7 @@ class ScalrBase:
         raise NotImplementedError
 
     def ensure_running(self):
-        raise NotADirectoryError
+        pass
 
     def get_current_size(self) -> int:
         servers = self.get_current()
@@ -127,5 +127,5 @@ class ScalrBase:
     def scale_down(self, diff: int):
         raise NotImplementedError
 
-    def __repr__() -> str:
+    def __repr__(self) -> str:
         return f"{self.name}"
