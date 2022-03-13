@@ -1,149 +1,211 @@
+import math
 import os
+import random
 import sys
-
 import time
-import schedule
-from datetime import datetime
+import uuid
 from argparse import ArgumentParser
-from prometheus_client import start_http_server, Gauge
+from typing import List
 
-from scalr.version import __version__
+import schedule
+from prometheus_client import Gauge, start_http_server
+
+from scalr.cloud import CloudAdapter, CloudInstance
+from scalr.cloud.factory import CloudAdapterFactory
+from scalr.config import ScaleDownSelectionEnum, ScalingConfig
 from scalr.log import log
-from scalr.config import read_config
+from scalr.policy.factory import PolicyAdapterFactory
+from scalr.version import __version__
 
-from scalr.factory.scalr import ScalrFactory
-from scalr.factory.policy import PolicyFactory
+metric_min = Gauge("scalr_min", "Min amount of resources")
+metric_max = Gauge("scalr_max", "Max amount of resources")
+metric_factor = Gauge("scalr_factor", "Calculated factor of policies")
+metric_desired = Gauge("scalr_desired", "Desired amount of resources")
+metric_current = Gauge("scalr_current", "Current amount of resources")
+metric_max_step_down = Gauge("scalr_max_step_down", "Max step for scaling down")
 
-metric_min = Gauge('scalr_min', 'Min amount of resources')
-metric_max = Gauge('scalr_max', 'Max amount of resources')
-metric_desired = Gauge('scalr_desired', 'Desired amount of resources')
-metric_current = Gauge('scalr_current', 'Current amount of resources')
-metric_max_step_down = Gauge('scalr_max_step_down', 'Max step for scaling down')
 
-def get_scaling_factor(policy_configs: list) -> int:
-    scaling_factor: int = 0
-    for policy_config in policy_configs:
-        try:
-            log.info(f"Processing {policy_config['name']}")
+class Scalr:
+    def __init__(self, config: ScalingConfig) -> None:
+        self.config = config
+        self.desired: int = 0
+        log.debug("Init scalr")
 
-            policy_factory = PolicyFactory()
-            policy = policy_factory.get_instance(
-                name=policy_config.get('source'),
-                config=policy_config,
+    def get_unique_name(self, prefix: str) -> str:
+        uid = str(uuid.uuid4()).split("-")[0]
+        return f"{prefix}-{uid}"
+
+    def calc_diff(self, factor: float, current_size: int) -> int:
+        log.info(f"Factor: {factor}")
+        log.info(f"Current: {current_size}")
+
+        if current_size == 0 and factor > 0:
+            log.warning("Current size was 0 but set to 1 factor calculation")
+            current_size = 1
+
+        desired: int = math.ceil(current_size * factor)
+        log.info(f"Calculated desired by factor: {desired}")
+
+        if self.config.max < desired:
+            log.info(
+                f"Desired {desired} > max {self.config.max}, resetted to max",
             )
-            policy_factor: int = policy.get_scaling_factor()
+            desired = self.config.max
+
+        elif self.config.min > desired:
+            log.info(
+                f"Desired {desired} < min {self.config.min}, resetted to min",
+            )
+            desired = self.config.min
+        else:
+            log.info(
+                f"Desired withing boundaries: min {self.config.min} =< desired {desired} =< max {self.config.max}",
+            )
+
+        log.info(f"Final desired: {desired}")
+        self.desired = desired
+
+        diff = desired - current_size
+        log.info(f"Calculated diff: {diff}")
+
+        if diff < 0 and 0 <= self.config.max_step_down < diff * -1:
+            log.info(f"Hit max down step: {self.config.max_step_down}")
+            diff = self.config.max_step_down * -1
+        return diff
+
+    def get_factor(self) -> float:
+        scaling_factor: float = 0
+        for policy_config in self.config.policies:
+            policy = PolicyAdapterFactory.create(source=policy_config.source)
+            policy.configure(config=policy_config)
+            policy_factor: float = policy.get_scaling_factor()
+            log.debug(f"Policy scaling factor: {policy_factor}")
             if policy_factor > scaling_factor:
                 scaling_factor = policy_factor
-        except Exception as e:
-            log.error(f"error: {e}")
-
-    return scaling_factor
-
-def process_time_rules(time_rules: list, base_rule: dict) -> dict:
-    log.info(f"Processing time rules...")
-    for time_rule in time_rules:
-        if 'days_of_year' in time_rule:
-            today = datetime.today().strftime('%b%d')
-            if today not in time_rule['days_of_year']:
-                log.info(f"Skipping days_of_year time rule '{time_rule['name']}'")
-                continue
-            log.debug(f"Today '{today}' in days_of_year of time rule '{time_rule['name']}'")
-
-        if 'weekdays' in time_rule:
-            today = datetime.today().strftime('%a')
-            if today not in time_rule['weekdays']:
-                log.info(f"Skipping time rule '{time_rule['name']}'")
-                continue
-            log.debug(f"Today '{today}' in weekday of time rule '{time_rule['name']}'")
-
-        if 'times_of_day' in time_rule:
-            now = datetime.now().time()
-            for time_range in time_rule['times_of_day']:
-                start, end = time_range.split('-')
-                start_time = datetime.strptime(start, "%H:%M").time()
-                end_time = datetime.strptime(end, "%H:%M").time()
-
-                if start_time > end_time:
-                    start_of_day = datetime.strptime("00:01", "%H:%M").time()
-                    end_of_day = datetime.strptime("23:59", "%H:%M").time()
-
-                    if not (start_time <= now <= end_of_day or start_of_day <= now <= end_time):
-                        log.info(f"Skipping time rule '{time_rule['name']}'")
-                        continue
-                else:
-                    if not (start_time <= now <= end_time):
-                        log.info(f"Skipping time rule '{time_rule['name']}'")
-                        continue
-
-                log.debug(f"{now} in time of day time rule '{time_rule['name']}'")
-                break
+                log.debug(f"Set scaling factor: {scaling_factor}")
             else:
-                continue
+                log.debug(f"Keep scaling factor: {scaling_factor}")
+        return scaling_factor
 
-        # Applying rules
-        log.info(f"Applying rule of '{time_rule['name']}'")
-        base_rule.update(**time_rule['rule'])
+    def scale(self, diff: int, cloud: CloudAdapter):
+        if self.config.min > self.config.max:
+            raise Exception(f"Error: min {self.config.min} > max {self.config.max}")
 
-        # Break on request
-        if time_rule.get('on_match', '') == 'break':
-            log.info(f"Breaking on match requested")
-            return base_rule
-
-    return base_rule
-
-def app() -> None:
-    print("")
-    try:
-        config: dict = read_config(config_source=os.getenv('SCALR_CONFIG', 'config.yml'))
-        base_rule = config.get('base_rule') or dict()
-        base_rule = process_time_rules(
-            time_rules=config.get('time_rules') or list(),
-            base_rule=base_rule
-        )
-        if not base_rule.get('enabled', False):
-            log.info(f"not enabled, skipping...")
+        if diff == 0:
+            log.info("No scaling action taken")
+            if not self.config.dry_run:
+                cloud.ensure_instances_running()
             return
 
-        base_rule.update({
-            'launch_config': config.get('launch_config')
-        })
+        if diff > 0:
+            self.scale_up(diff, cloud)
 
-        scale_factory = ScalrFactory()
-        scalr = scale_factory.get_instance(
-            name=config['kind'],
-            config=base_rule,
-        )
+        elif diff < 0:
+            self.scale_down(diff * -1, cloud)
 
-        scalr.scale(
-            factor=get_scaling_factor(
-                policy_configs=config.get('policies', [])
+        if not self.config.dry_run:
+            log.info(f"Cooling down for {self.config.cooldown_timeout}s")
+            for i in range(self.config.cooldown_timeout):
+                time.sleep(1)
+            log.info("Cooldown finished")
+
+    def scale_up(self, diff: int, cloud: CloudAdapter):
+        log.info(f"Scaling up {diff}")
+        while diff > 0:
+            instance_name = self.get_unique_name(prefix=self.config.name)
+            if not self.config.dry_run:
+                log.info(f"Creating instance {instance_name}")
+                cloud.deploy_instance(name=instance_name)
+                cloud.ensure_instances_running()
+            else:
+                log.info(f"Dry run creating instance {instance_name}")
+            diff -= 1
+
+    def scale_down(self, diff: int, cloud: CloudAdapter):
+        log.info(f"Scaling down {diff}")
+        instances = cloud.get_current_instances()
+        while diff > 0:
+            instance = self.select_instance(
+                strategy=self.config.scale_down_selection, current_servers=instances
             )
-        )
+            if not self.config.dry_run:
+                log.info(f"Deleting instance {instance}")
+                cloud.destroy_instance(instance=instance)
+                cloud.ensure_instances_running()
+            else:
+                log.info(f"Dry run deleting instance {instance}")
+            diff -= 1
 
-        # Set exporter metrics
-        metric_min.set(scalr.min)
-        metric_max.set(scalr.max)
-        metric_current.set(scalr.current)
-        metric_desired.set(scalr.desired)
-        metric_max_step_down.set(scalr.max_step_down)
-    except Exception as ex:
-        log.error(ex)
-        sys.exit(1)
+    def select_instance(
+        self, strategy: str, current_servers: List[CloudInstance]
+    ) -> CloudInstance:
+        if not current_servers:
+            raise Exception("Error: No current instances found")
 
-def run_periodic(interval: int = 60) -> None:
+        if strategy == ScaleDownSelectionEnum.oldest:
+            index = -1
+
+        elif strategy == ScaleDownSelectionEnum.youngest:
+            index = 0
+
+        else:
+            index = random.randint(0, len(current_servers) - 1)
+        return current_servers.pop(index)
+
+
+def app_once() -> None:
+    print("---")
+    cfg = ScalingConfig.parse_file(os.getenv("SCALR_CONFIG", "config.yml"))
+
+    if cfg.enabled:
+        log.info("Not enabled, skipping...")
+        return
+
+    cloud = CloudAdapterFactory.create(cfg.cloud.kind)
+    cloud.configure(
+        filter=cfg.name,
+        launch=cfg.cloud.launch_config,
+    )
+
+    scalr = Scalr(config=cfg)
+    factor: float = scalr.get_factor()
+    current_size: int = len(cloud.get_current_instances())
+    diff: int = scalr.calc_diff(factor=factor, current_size=current_size)
+    scalr.scale(diff=diff, cloud=cloud)
+
+    # Set exporter metrics
+    metric_min.set(cfg.min)
+    metric_max.set(cfg.max)
+    metric_max_step_down.set(cfg.max_step_down)
+    metric_current.set(current_size)
+    metric_desired.set(scalr.desired)
+    metric_factor.set(factor)
+
+
+def app_periodic(interval: int = 60) -> None:
     log.info(f"Running periodic in intervals of {interval}s")
-    schedule.every(interval).seconds.do(app)
+    schedule.every(interval).seconds.do(app_once)
     time.sleep(1)
     schedule.run_all()
     while True:
         schedule.run_pending()
-        print(f".", end='', flush=True)
         time.sleep(1)
+
 
 def main() -> None:
     parser: ArgumentParser = ArgumentParser()
-    parser.add_argument("--periodic", help="run periodic", action="store_true", default=bool(os.environ.get('SCALR_PERIODIC', False)))
-    parser.add_argument("--interval", help="set interval in seconds", type=int, default=int(os.environ.get('SCALR_INTERVAL', 60)))
+    parser.add_argument(
+        "--periodic",
+        help="run periodic",
+        action="store_true",
+        default=bool(os.environ.get("SCALR_PERIODIC", False)),
+    )
+    parser.add_argument(
+        "--interval",
+        help="set interval in seconds",
+        type=int,
+        default=int(os.environ.get("SCALR_INTERVAL", 60)),
+    )
     parser.add_argument("--version", help="show version", action="store_true")
     args = parser.parse_args()
 
@@ -155,16 +217,19 @@ def main() -> None:
 
     if args.periodic:
         try:
-            start_http_server(int(os.environ.get('SCALR_PROMETHEUS_EXPORTER_PORT', 8000)))
-            run_periodic(args.interval)
+            start_http_server(
+                int(os.environ.get("SCALR_PROMETHEUS_EXPORTER_PORT", 8000))
+            )
+            app_periodic(interval=args.interval)
         except KeyboardInterrupt:
             print("")
-            log.info(f"Stopping...")
+            log.info("Stopping...")
             schedule.clear()
-            log.info(f"done")
+            log.info("done")
             pass
     else:
-        app()
+        app_once()
+
 
 if __name__ == "__main__":
     main()

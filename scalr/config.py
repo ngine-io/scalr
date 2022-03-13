@@ -1,29 +1,36 @@
-import yaml
-import json
+from typing import List, Optional
 
-import requests
-from requests.models import Response
+from pydantic import BaseModel, Field
+from pydantic_yaml import YamlModel, YamlStrEnum
 
-def read_config(config_source):
-    config: dict = dict()
-    if config_source.startswith("http"):
-        res: Response = requests.get(
-            url=config_source,
-        )
-        res.raise_for_status()
-        config = res.json()
 
-    elif config_source.endswith(('.yaml', '.yml')):
-        with open(config_source, "r") as infile:
-            config = yaml.load(infile, Loader=yaml.FullLoader)
-            infile.close()
+class ScaleDownSelectionEnum(YamlStrEnum):
+    oldest: str = "oldest"
+    youngest: str = "youngest"
+    random: str = "random"
 
-    elif config_source.endswith('json'):
-        with open(config_source, "r") as infile:
-            config = json.load(infile)
-            infile.close()
 
-    if not config:
-        raise Exception("Empty config file")
+class PolicyConfig(BaseModel):
+    name: str
+    source: str
+    target: int
+    query: Optional[str]
+    config: Optional[dict]
 
-    return config
+
+class CloudConfig(BaseModel):
+    kind: str
+    launch_config: dict
+
+
+class ScalingConfig(YamlModel):
+    cloud: CloudConfig
+    name: str = "scalr"
+    min: int = 0
+    max: int = 0
+    enabled: bool = False
+    dry_run: bool = False
+    max_step_down: int = 1
+    scale_down_selection: str = ScaleDownSelectionEnum.oldest
+    cooldown_timeout: int = 60
+    policies: List[PolicyConfig] = Field(default_factory=list)

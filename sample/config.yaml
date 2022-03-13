@@ -2,16 +2,15 @@
 # NOTE: the name is used to prefix and identify resources by a tag.
 # If changed, existing resources won't be scaled and must be deleted manually.
 ---
-name: app
-
-base_rule:
+scaling:
+  name: app
   enabled: true
   dry_run: false
   min: 2
   max: 5
   max_step_down: 1
   scale_down_selection: oldest
-  cooldown: 60
+  cooldown_timeout: 60
 
 # Base rule can be overwritten by time based rules
 time_rules:
