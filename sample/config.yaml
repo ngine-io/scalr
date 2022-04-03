@@ -1,142 +1,105 @@
 ---
 # NOTE: the name is used to prefix and identify resources by a tag.
 # If changed, existing resources won't be scaled and must be deleted manually.
----
-scaling:
-  name: app
-  enabled: true
-  dry_run: false
-  min: 2
-  max: 5
-  max_step_down: 1
-  scale_down_selection: oldest
-  cooldown_timeout: 60
-
-# Base rule can be overwritten by time based rules
-time_rules:
-  - name: Dry run on Tuesday morning during maintenance window
-    # Wed at 01:00-04:00
-    weekdays:
-      - Tue
-    times_of_day:
-      - 01:00-04:00
-    # Do not evaluate later rules
-    on_match: break
-    rule:
-      dry_run: true
-
-  - name: Lights off at night
-    times_of_day:
-      - 23:30-08:00
-    rule:
-      min: 0
-      max: 0
-      max_step_down: 10
-
-  - name: Lights off on weekends
-    weekdays:
-      - Sun
-      - Sat
-    rule:
-      min: 0
-      max: 0
-      max_step_down: 10
+name: app
+enabled: true
+dry_run: false
+min: 2
+max: 5
+max_step_down: 1
+scale_down_selection: oldest
+cooldown_timeout: 60
 
 policies:
   ## Query a web endpoint.
   ## A JSON return o {"metric": <int>} is expected in this case
-# - name: my check over web
-#   target: 5
-#   source: web
-#   query: http://localhost:8000/target.json
-#   config:
-#     headers:
-#       Authorization: Bearer xyz
-#     key: metric
+  - name: my check over web
+    target: 5
+    source: web
+    query: http://localhost:8000/target.json
+    config:
+      headers:
+        Authorization: Bearer xyz
+    key: metric
 
-# - name: influxdb
-#   target: 5
-#   source: influxdb
-#   config:
-#     host: localhost
-#     port: 8086
-#     database: metrics
-#     username: root
-#     passwort: root
-#     measurement: cpu
-#     tags: {}
+  - name: random one to ten
+    target: 5
+    source: random
+    config:
+      start: 1
+      stop: 10
 
-- name: random one to ten
-  target: 5
-  source: random
-  config:
-    start: 1
-    stop: 10
+cloud:
+  ### Cloudscale.ch
+  kind: cloudscale_ch
+  launch_config:
+    flavor: flex-2
+    image: debian-10
+    zone: lpg1
+    tags:
+      project: gemini
+    ssh_keys:
+      - ssh-ed25519 AAAAC3N
+    user_data: |
+      #cloud-config
+      manage_etc_hosts: true
+      package_update: true
+      package_upgrade: true
+      packages:
+        - nginx
 
-kind: cloudscale_ch
-launch_config:
-# Cloudscale.ch
-  flavor: flex-2
-  image: debian-10
-  zone: lpg1
-  tags:
-    project: gemini
-  ssh_keys:
-    - ssh-ed25519 AAAAC3N
-  user_data: |
-    #cloud-config
-    manage_etc_hosts: true
-    package_update: true
-    package_upgrade: true
-    packages:
-      - nginx
+  # ### Hetzner Cloud
+  # kind: hcloud
+  # launch_config:
+  #   server_type: cx11
+  #   image: debian-10
+  #   labels:
+  #     project: gemini
+  #   location: fsn1
+  #   ssh_keys:
+  #     - resmo
+  #   user_data: |
+  #     #cloud-config
+  #     manage_etc_hosts: true
+  #     package_update: true
+  #     package_upgrade: true
+  #     packages:
+  #       - nginx
 
-# Hetzner Cloud
-  # server_type: cx11
-  # image: debian-10
-  # labels:
-  #   project: gemini
-  # location: fsn1
-  # ssh_keys:
-  #   - resmo
-  # user_data: |
-  #   #cloud-config
-  #   manage_etc_hosts: true
-  #   package_update: true
-  #   package_upgrade: true
-  #   packages:
-  #     - nginx
+  # ### Cloudstack
+  # kind: cloudstack
+  # launch_config:
+  #   service_offering: Micro
+  #   template: Linux Debian 10 (Buster) 64-bit
+  #   security_groups:
+  #     - default
+  #   zone: de-muc-1
+  #   ssh_key: rmoser-puzzle
+  #   tags:
+  #     project: gemini
+  #   root_disk_size: 20
+  #   user_data: |
+  #     #cloud-config
+  #     manage_etc_hosts: true
+  #     package_update: true
+  #     package_upgrade: true
+  #     packages:
+  #       - nginx
 
-# Cloudstack
-  # service_offering: Micro
-  # template: Linux Debian 10 (Buster) 64-bit
-  # security_groups:
-  #   - default
-  # zone: de-muc-1
-  # ssh_key: rmoser-puzzle
-  # tags:
-  #   project: gemini
-  # root_disk_size: 20
-  # user_data: |
-  #   #cloud-config
-  #   manage_etc_hosts: true
-  #   package_update: true
-  #   package_upgrade: true
-  #   packages:
-  #     - nginx
-
-# Digital Ocean
-  # size: s-1vcpu-1gb
-  # image: debian-10-x64
-  # region: ams3
-  # ssh_keys:
-  #   - 'b5:be:e8:...'
-  # tags:
-  #   - 'project:gemini'
-  # user_data: |
-  #   #cloud-config
-  #   manage_etc_hosts: true
-  #   package_update: true
-  #   package_upgrade: true
-  #   packages:
-  #     - nginx
+  # ### Digital Ocean
+  # kind: digitalocean
+  # launch_config:
+  #   size: s-1vcpu-1gb
+  #   image: debian-10-x64
+  #   region: ams3
+  #   ssh_keys:
+  #     - 'b5:be:e8:...'
+  #   tags:
+  #     - 'project:gemini'
+  #   user_data: |
+  #     #cloud-config
+  #     manage_etc_hosts: true
+  #     package_update: true
+  #     package_upgrade: true
+  #     packages:
+  #       - nginx

@@ -24,21 +24,6 @@ policy:
     query: '100 - (avg by (job) (rate(node_cpu_seconds_total{mode="idle", instance=~"cluster-node.*"}[10m])) * 100)'
 ```
 
-## InfluxDB Policy
-
-Query an InfluxDB endpoint.
-
-!!! note
-     Not yet implemented.
-
-```yaml
-policy:
-- name: Get CPU metrics
-  target: 70
-  source: influxdb
-  query: "select value from cpu_load_short;"
-```
-
 ## Web Policy
 
 Query a web endpoint.
