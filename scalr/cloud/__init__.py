@@ -23,7 +23,7 @@ class GenericCloudInstance(CloudInstance):
 
 class CloudAdapter(ABC):
     def configure(self, launch: dict, filter: Optional[str] = None) -> None:
-        """Configures cloud adapter with launchconfig."""
+        """Configures cloud adapter with a launch config and an optional tag filter."""
         self.launch = launch
         self.filter = filter
 

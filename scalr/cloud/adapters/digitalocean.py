@@ -21,7 +21,7 @@ class DigitaloceanCloudAdapter(CloudAdapter):
 
     def get_current_instances(self) -> List[DigitalOceanCloudInstance]:
         filter_tag = f"scalr={filter}"
-        log.info(f"digitalcoean: Querying with filter_tag: {filter_tag}")
+        log.info(f"digitalocean: Querying with filter_tag: {filter_tag}")
         droplets = self.client.get_all_droplets(tag_name=filter_tag)
         return [
             DigitalOceanCloudInstance(droplet)
@@ -29,18 +29,18 @@ class DigitaloceanCloudAdapter(CloudAdapter):
         ]
 
     def ensure_instances_running(self) -> None:
-        log.info("digitalcoean: ensure running")
+        log.info("digitalocean: ensure running")
 
         for instance in self.get_current_instances():
             log.info(
-                f"digitalcoean: instance {instance.droplet.name} status {instance.droplet.status}"
+                f"digitalocean: instance {instance.droplet.name} status {instance.droplet.status}"
             )
             if instance.droplet.status == "off":
                 instance.droplet.power_on()
 
     def deploy_instance(self, name: str) -> None:
-        log.info(f"digitalcoean: Deploying instance with name {name}")
-        launch_config = self.launch.config.copy()
+        log.info(f"digitalocean: Deploying instance with name {name}")
+        launch_config = self.launch.copy()
         launch_config.update(
             {
                 "label": name,
@@ -64,5 +64,5 @@ class DigitaloceanCloudAdapter(CloudAdapter):
         log.info(f"Creating droplet {name}")
 
     def destroy_instance(self, instance: DigitalOceanCloudInstance) -> None:
-        log.info(f"digitalcoean: Destroying instance {instance}")
+        log.info(f"digitalocean: Destroying instance {instance}")
         instance.droplet.destroy()

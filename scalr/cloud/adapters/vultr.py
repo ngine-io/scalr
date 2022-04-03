@@ -4,7 +4,7 @@ from dataclasses import asdict
 from typing import List, Optional
 
 import requests
-from scalr.cloud import CloudAdapter, CloudInstance, GenericCloudInstance, LaunchConfig
+from scalr.cloud import CloudAdapter, GenericCloudInstance
 from scalr.log import log
 
 VULTR_API_KEY: str = str(os.getenv("VULTR_API_KEY"))
@@ -140,7 +140,7 @@ class VultrCloudAdapter(CloudAdapter):
 
     def deploy_instance(self, name: str) -> None:
         log.info(f"vultr: Deploying new instance named {name}")
-        launch_config = self.launch.config.copy()
+        launch_config = self.launch.copy()
         launch_config.update(
             {
                 "label": name,

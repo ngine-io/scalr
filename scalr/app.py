@@ -8,11 +8,11 @@ from argparse import ArgumentParser
 from typing import List
 
 import schedule
-from prometheus_client import Gauge, start_http_server
+from prometheus_client import Enum, Gauge, start_http_server
 
 from scalr.cloud import CloudAdapter, CloudInstance
 from scalr.cloud.factory import CloudAdapterFactory
-from scalr.config import ScaleDownSelectionEnum, ScalingConfig
+from scalr.config import PolicyConfig, ScaleDownSelectionEnum, ScalingConfig
 from scalr.log import log
 from scalr.policy.factory import PolicyAdapterFactory
 from scalr.version import __version__
@@ -23,6 +23,11 @@ metric_factor = Gauge("scalr_factor", "Calculated factor of policies")
 metric_desired = Gauge("scalr_desired", "Desired amount of resources")
 metric_current = Gauge("scalr_current", "Current amount of resources")
 metric_max_step_down = Gauge("scalr_max_step_down", "Max step for scaling down")
+metric_cooldown_timeout = Gauge(
+    "scalr_cooldown_timeout", "Timeout in seconds after scaling actions"
+)
+metric_dry_run = Enum("scalr_dry_run", "Dry run mode", states=["on", "off"])
+metric_enabled = Enum("scalr_enabled", "Scaling enabled", states=["yes", "no"])
 
 
 class Scalr:
@@ -39,11 +44,12 @@ class Scalr:
         log.info(f"Factor: {factor}")
         log.info(f"Current: {current_size}")
 
+        calc_current_size: int = current_size
         if current_size == 0 and factor > 0:
             log.warning("Current size was 0 but set to 1 factor calculation")
-            current_size = 1
+            calc_current_size = 1
 
-        desired: int = math.ceil(current_size * factor)
+        desired: int = math.ceil(calc_current_size * factor)
         log.info(f"Calculated desired by factor: {desired}")
 
         if self.config.max < desired:
@@ -73,9 +79,9 @@ class Scalr:
             diff = self.config.max_step_down * -1
         return diff
 
-    def get_factor(self) -> float:
+    def get_factor(self, policy_configs: List[PolicyConfig]) -> float:
         scaling_factor: float = 0
-        for policy_config in self.config.policies:
+        for policy_config in policy_configs:
             policy = PolicyAdapterFactory.create(source=policy_config.source)
             policy.configure(config=policy_config)
             policy_factor: float = policy.get_scaling_factor()
@@ -87,7 +93,7 @@ class Scalr:
                 log.debug(f"Keep scaling factor: {scaling_factor}")
         return scaling_factor
 
-    def scale(self, diff: int, cloud: CloudAdapter):
+    def scale(self, diff: int, cloud: CloudAdapter) -> None:
         if self.config.min > self.config.max:
             raise Exception(f"Error: min {self.config.min} > max {self.config.max}")
 
@@ -103,11 +109,14 @@ class Scalr:
         elif diff < 0:
             self.scale_down(diff * -1, cloud)
 
-        if not self.config.dry_run:
-            log.info(f"Cooling down for {self.config.cooldown_timeout}s")
-            for i in range(self.config.cooldown_timeout):
-                time.sleep(1)
-            log.info("Cooldown finished")
+    def cooldown(self) -> None:
+        if self.config.dry_run:
+            return
+
+        log.info(f"Cooling down for {self.config.cooldown_timeout}s")
+        for i in range(self.config.cooldown_timeout):
+            time.sleep(1)
+        log.info("Cooldown finished")
 
     def scale_up(self, diff: int, cloud: CloudAdapter):
         log.info(f"Scaling up {diff}")
@@ -157,7 +166,15 @@ def app_once() -> None:
     print("---")
     cfg = ScalingConfig.parse_file(os.getenv("SCALR_CONFIG", "config.yml"))
 
-    if cfg.enabled:
+    # Set exporter metrics
+    metric_min.set(cfg.min)
+    metric_max.set(cfg.max)
+    metric_max_step_down.set(cfg.max_step_down)
+    metric_dry_run.state("on" if cfg.dry_run else "off")
+    metric_enabled.state("yes" if cfg.enabled else "no")
+    metric_cooldown_timeout.set(cfg.cooldown_timeout)
+
+    if not cfg.enabled:
         log.info("Not enabled, skipping...")
         return
 
@@ -168,18 +185,21 @@ def app_once() -> None:
     )
 
     scalr = Scalr(config=cfg)
-    factor: float = scalr.get_factor()
+    factor: float = scalr.get_factor(policy_configs=cfg.policies)
+    metric_factor.set(factor)
+
     current_size: int = len(cloud.get_current_instances())
+    metric_current.set(current_size)
+
     diff: int = scalr.calc_diff(factor=factor, current_size=current_size)
+    metric_desired.set(scalr.desired)
+
     scalr.scale(diff=diff, cloud=cloud)
 
-    # Set exporter metrics
-    metric_min.set(cfg.min)
-    metric_max.set(cfg.max)
-    metric_max_step_down.set(cfg.max_step_down)
+    current_size: int = len(cloud.get_current_instances())
     metric_current.set(current_size)
-    metric_desired.set(scalr.desired)
-    metric_factor.set(factor)
+
+    scalr.cooldown()
 
 
 def app_periodic(interval: int = 60) -> None:

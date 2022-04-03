@@ -6,6 +6,5 @@
 build
 dist
 *.pyc
-*.json
 site
 config.yml
