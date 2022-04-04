@@ -2,64 +2,46 @@
 
 Scale configuration is made by creating a `config.yml` or whatever file `SCALR_CONFIG` points to.
 
-!!! note
+!!! hint
     The config will be re-read before every run, no need to restart a running Scalr service after a config change.
 
-## Common Config
+## Common Config Skeleton
+
+!!! hint
+    You find a sample config.yml in our [GitHub Repo](https://github.com/ngine-io/scalr/)
 
 ```yaml
 ---
-name: my scaling config
-base_rule:
-  # Whether this config is enabled or disabled
-  enabled: true
+# Name is used to group instances e.g. with a tag or label depending on the cloud provider
+# NOTE: If you change the name, all current instances having the name are getting unmanaged.
+name: my-app
 
-  # Allows to run Scalr without any actions taken.
-  dry_run: false
+# Change it to false to completely skip all action
+enabled: true
 
-  # Time to let Scalr hold on further actions after an action was taken.
-  cooldown: 120
+# Change it to false to skip the scaling
+dry_run: false
 
-  # Range in which Scalr will scale.
-  min: 2
-  max: 5
+# Not scaling down below this value
+min: 2
 
-  # Define how many instances can be scaled down at once.
-  #  0: no scaling down
-  # -1: no limit.
-  max_step_down: 1
+# Not scaling up above this value
+max: 5
 
-# Optional: time based rules (first match)
-time_rules:
-  - name: More capacity on Black Friday 2021
-    days_of_year:
-      - Nov26
-    # Do not evaluate further rules on match
-    on_match: break
-    rule:
-      min: 3
-      max: 8
+# The max value of instances to be scaled down in one run
+max_step_down: 1
 
-  - name: Turn off scaling during weekly maintenance
-    days_of_year:
-      - Wed
-    times_of_day:
-      - 01:00-04:00
-    rule:
-      enabled: false
+# Strategy of order to destroy instances
+scale_down_selection: oldest
 
-  - name: Allow Lights off on weekends
-    weekdays:
-      - Sun
-      - Sat
-    rule:
-      min: 0
-      max_step_down: 2
+# After scaling down, wait for so long in seconds
+cooldown_timeout: 60
 
 # See Policy configs
 policies: []
 
-# See Launch config
-kind: ...
-launch_config: {}
+# See cloud config
+cloud:
+  kind: ...
+  launch_config: {}
 ```
