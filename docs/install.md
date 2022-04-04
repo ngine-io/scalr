@@ -18,10 +18,6 @@ Settings can be set either by ENV vars or by providing a `.env` file:
 ```ini
 SCALR_LOG_LEVEL=INFO
 SCALR_CONFIG=./config.yml
-
-# apply to --periodic
-SCALR_INTERVAL=20
-SCALR_PROMETHEUS_EXPORTER_PORT=8000
 ```
 
 ## Cloud ENV variables
