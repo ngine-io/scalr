@@ -97,17 +97,17 @@ class Scalr:
         if self.config.min > self.config.max:
             raise Exception(f"Error: min {self.config.min} > max {self.config.max}")
 
-        if diff == 0:
-            log.info("No scaling action taken")
-            if not self.config.dry_run:
-                cloud.ensure_instances_running()
-            return
-
         if diff > 0:
             self.scale_up(diff, cloud)
 
         elif diff < 0:
             self.scale_down(diff * -1, cloud)
+
+        else:
+            log.info("No scaling action taken")
+
+        if not self.config.dry_run:
+            cloud.ensure_instances_running()
 
     def cooldown(self) -> None:
         if self.config.dry_run:
@@ -125,7 +125,6 @@ class Scalr:
             if not self.config.dry_run:
                 log.info(f"Creating instance {instance_name}")
                 cloud.deploy_instance(name=instance_name)
-                cloud.ensure_instances_running()
             else:
                 log.info(f"Dry run creating instance {instance_name}")
             diff -= 1
@@ -140,7 +139,6 @@ class Scalr:
             if not self.config.dry_run:
                 log.info(f"Deleting instance {instance}")
                 cloud.destroy_instance(instance=instance)
-                cloud.ensure_instances_running()
             else:
                 log.info(f"Dry run deleting instance {instance}")
             diff -= 1
@@ -163,7 +161,8 @@ class Scalr:
 
 
 def app_once() -> None:
-    print("---")
+    log.info("Start scaling run")
+
     cfg = ScalingConfig.parse_file(os.getenv("SCALR_CONFIG", "config.yml"))
 
     # Set exporter metrics
@@ -193,23 +192,12 @@ def app_once() -> None:
 
     diff: int = scalr.calc_diff(factor=factor, current_size=current_size)
     metric_desired.set(scalr.desired)
-
     scalr.scale(diff=diff, cloud=cloud)
-
-    current_size: int = len(cloud.get_current_instances())
-    metric_current.set(current_size)
-
-    scalr.cooldown()
-
-
-def app_periodic(interval: int = 60) -> None:
-    log.info(f"Running periodic in intervals of {interval}s")
-    schedule.every(interval).seconds.do(app_once)
-    time.sleep(1)
-    schedule.run_all()
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    if diff:
+        current_size: int = len(cloud.get_current_instances())
+        metric_current.set(current_size)
+        scalr.cooldown()
+    log.info("End scaling run")
 
 
 def main() -> None:
@@ -240,7 +228,15 @@ def main() -> None:
             start_http_server(
                 int(os.environ.get("SCALR_PROMETHEUS_EXPORTER_PORT", 8000))
             )
-            app_periodic(interval=args.interval)
+
+            log.info(f"Running periodic in intervals of {args.interval}s")
+            schedule.every(args.interval).seconds.do(app_once)
+            time.sleep(1)
+            schedule.run_all()
+            while True:
+                schedule.run_pending()
+                time.sleep(1)
+
         except KeyboardInterrupt:
             print("")
             log.info("Stopping...")

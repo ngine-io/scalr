@@ -44,7 +44,7 @@ class CloudscaleCloudAdapter(CloudAdapter):
                 "tags": tags,
             }
         )
-        self.cloudscale.server.create(**launch_config)
+        self.cloudscale.server.create(**launch_config)  # type: ignore
 
     def destroy_instance(self, instance: GenericCloudInstance) -> None:
         log.info(f"cloudscale: Destroying instance {instance}")
