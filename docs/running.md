@@ -132,7 +132,8 @@ scrape_configs:
       - scalr-app:8000
 ```
 
-## Graphana Dashboard
+## Grafana Dashboard
 
+A simple dashboard for scalr can be found on [Github](https://raw.githubusercontent.com/ngine-io/scalr/main/sample/grafana/dashboard.json)
 
-A simple dashboard for scalr can be found on [Github]()
+![](https://raw.githubusercontent.com/ngine-io/scalr/main/sample/grafana/scalr_grafana.png)
