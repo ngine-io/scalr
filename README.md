@@ -3,6 +3,7 @@
 ![status](https://img.shields.io/pypi/status/scalr-ngine.svg)
 [![pypi version](https://img.shields.io/pypi/v/scalr-ngine.svg)](https://pypi.org/project/scalr-ngine/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dw/scalr-ngine)
+[![Codecov](https://img.shields.io/codecov/c/github/ngine-io/scalr)](https://codecov.io/gh/ngine-io/scalr)
 
 # Scalr - Autoscaling for Clouds
 
