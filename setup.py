@@ -20,7 +20,7 @@ with open("scalr/version.py") as fp:
 
 setup(
     name="scalr-ngine",
-    version=version['__version__'],
+    version=version["__version__"],
     author="René Moser",
     author_email="mail@renemoser.net",
     license="MIT",
@@ -40,10 +40,10 @@ setup(
     ],
     install_requires=install_requires,
     tests_require=tests_require,
-    python_requires='>=3.6',
+    python_requires=">=3.8",
     entry_points={
-        'console_scripts': [
-            'scalr-ngine = scalr.app:main',
+        "console_scripts": [
+            "scalr-ngine = scalr.app:main",
         ],
     },
 )

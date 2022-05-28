@@ -1,13 +1,13 @@
-cloudscale-sdk==0.6.2
+cloudscale-sdk==0.7.0
 cs==3.0.0
 hcloud==1.16.0
 prometheus-api-client==0.5.0
 prometheus-client==0.13.1
-pydantic==1.9.0
+pydantic-yaml==0.6.3
+pydantic==1.9.1
 python-digitalocean==1.17.0
 python-dotenv==0.19.2
 python-json-logger==2.0.2
 PyYAML==6.0
 requests==2.27.1
 schedule==1.1.0
-pydantic-yaml==0.6.3

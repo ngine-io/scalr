@@ -1,6 +1,7 @@
 import os
+
 from cs import CloudStack
-from scalr.cloud.cloudstack import CloudstackCloudAdapter
+from scalr.cloud.adapters.cloudstack import CloudstackCloudAdapter
 from scalr.log import log
 
 
@@ -13,11 +14,11 @@ class ExoscaleCloudAdapter(CloudstackCloudAdapter):
             secret=os.getenv("EXOSCALE_API_SECRET"),
         )
 
-    def _get_deploy_params(self, lc):
-        params = super()._get_deploy_params(lc)
+    def get_params(self, name) -> dict:
+        params = super().get_params(name=name)
         params.update(
             {
-                "ipv6": lc.get("use_ipv6"),
+                "ipv6": self.launch.get("use_ipv6"),
             }
         )
         return params
