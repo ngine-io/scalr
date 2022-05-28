@@ -122,5 +122,42 @@ cloud:
     # ddos_protection: true
     # firewall_group_id: ...
     # enable_private_network: true
+```
 
+## Apache CloudStack
+
+```yaml
+  kind: cloudstack
+  launch_config:
+    service_offering: cpu2-ram2
+    template: Linux Template xyz
+    zone: my-zone
+    ssh_key: my_ssh_key
+    tags:
+      project: gemini
+    root_disk_size: 20
+    user_data: |
+      #cloud-config
+      manage_etc_hosts: true
+      packages:
+        - nginx
+```
+
+## Exoscale
+
+```yaml
+  kind: exoscale
+  launch_config:
+    service_offering: Micro
+    template: Linux Debian 11 (Bullseye) 64-bit
+    zone: ch-dk-2
+    ssh_key: my-ssh-key
+    tags:
+      project: gemini
+    root_disk_size: 20
+    user_data: |
+      #cloud-config
+      manage_etc_hosts: true
+      packages:
+        - nginx
 ```
