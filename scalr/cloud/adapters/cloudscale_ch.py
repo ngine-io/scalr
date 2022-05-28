@@ -13,7 +13,7 @@ class CloudscaleCloudAdapter(CloudAdapter):
     def get_current_instances(self) -> List[GenericCloudInstance]:
         filter_tag = f"scalr={self.filter}"
         log.info(f"cloudscale: Querying with filter_tag: {filter_tag}")
-        servers = self.cloudscale.server.get_all(filter_tag=filter_tag)  # type: ignore
+        servers = self.cloudscale.server.get_all(filter_tag=filter_tag)
         return [
             GenericCloudInstance(
                 id=server["uuid"],
@@ -28,7 +28,7 @@ class CloudscaleCloudAdapter(CloudAdapter):
         for instance in self.get_current_instances():
             log.info(f"cloudscale: instance, {instance.name} status {instance.status}")
             if instance.status == "stopped":
-                self.cloudscale.server.start(uuid=instance.id)  # type: ignore
+                self.cloudscale.server.start(uuid=instance.id)
                 log.info(f"cloudscale: Instance {instance.name} started")
 
     def deploy_instance(self, name: str) -> None:
@@ -44,8 +44,8 @@ class CloudscaleCloudAdapter(CloudAdapter):
                 "tags": tags,
             }
         )
-        self.cloudscale.server.create(**launch_config)  # type: ignore
+        self.cloudscale.server.create(**launch_config)
 
     def destroy_instance(self, instance: GenericCloudInstance) -> None:
         log.info(f"cloudscale: Destroying instance {instance}")
-        self.cloudscale.server.delete(uuid=instance.id)  # type: ignore
+        self.cloudscale.server.delete(uuid=instance.id)
