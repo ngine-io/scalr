@@ -5,9 +5,9 @@ from pydantic_yaml import YamlModel, YamlStrEnum
 
 
 class ScaleDownSelectionEnum(YamlStrEnum):
-    oldest: str = "oldest"
-    youngest: str = "youngest"
-    random: str = "random"
+    oldest = "oldest"
+    youngest = "youngest"
+    random = "random"
 
 
 class PolicyConfig(BaseModel):
