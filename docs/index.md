@@ -25,4 +25,4 @@ A policy defines check of a target value (amount of CPU, amount of HTTP requests
 
 Your Cloud and policy configuration are defined by a configuration. Scalr reads its configuration on every run and can be changed inbetween runs.
 
-- Static YAML file
+- Static YAML file (see a [sample](https://github.com/ngine-io/scalr/blob/main/sample/config.yaml))
