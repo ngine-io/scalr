@@ -48,6 +48,22 @@ cloud:
       packages:
         - nginx
 
+  ### Exoscale
+  # kind: exoscale
+  # launch_config:
+  #   service_offering: Micro
+  #   template: Linux Debian 11 (Bullseye) 64-bit
+  #   zone: ch-dk-2
+  #   ssh_key: resmo@diode
+  #   tags:
+  #     project: gemini
+  #   root_disk_size: 20
+  #   user_data: |
+  #     #cloud-config
+  #     manage_etc_hosts: true
+  #     packages:
+  #       - nginx
+
   # ### Hetzner Cloud
   # kind: hcloud
   # launch_config:
