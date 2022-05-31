@@ -1,6 +1,6 @@
 ---
 # NOTE: the name is used to prefix and identify resources by a tag.
-# If changed, existing resources won't be scaled and must be deleted manually.
+# If changed, existing resources become unmanaged and must be deleted manually.
 name: app
 enabled: true
 dry_run: false
