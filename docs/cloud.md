@@ -5,7 +5,7 @@ Cloud config to be used for lunching new instances.
 !!! Warning
     Changing a cloud launch config have no affect to already running cloud instances. But this may change in the future.
 
-## Cloudscale.ch
+## cloudscale.ch
 
 ```yaml
 cloud:
@@ -152,6 +152,7 @@ cloud:
     template: Linux Debian 11 (Bullseye) 64-bit
     zone: ch-dk-2
     ssh_key: my-ssh-key
+    use_ipv6: true
     tags:
       project: gemini
     root_disk_size: 20
