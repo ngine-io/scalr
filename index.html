@@ -444,7 +444,7 @@
 <h2 id="cloud-adapters">Cloud Adapters</h2>
 <p>This is the connector to the API of your Cloud provider. It reads current available servers of your Scalr group and scales up and down based on a calculation factor received from one or more policies:</p>
 <ul>
-<li><a href="https://www.cloudscale.ch">Cloudscale.ch</a></li>
+<li><a href="https://www.cloudscale.ch">cloudscale.ch</a></li>
 <li><a href="https://www.hetzner.com/cloud">Hetzner Cloud</a></li>
 <li><a href="https://www.digitalocean.com">DigitalOcean</a></li>
 <li><a href="https://cloudstack.apache.org">Apache CloudStack</a></li>
@@ -452,11 +452,15 @@
 <li><a href="https://www.vultr.com">Vultr</a></li>
 </ul>
 <h2 id="policy-adapters">Policy Adapters</h2>
-<p>A policy defines check of a target value (amount of CPU, amount of HTTP requests, etc) and where to gather the metric from, such as the following. Multiple policies can be used in a single config.</p>
+<p>A policy defines check of a target value (amount of CPU, amount of HTTP requests, etc) and where to gather the metric from, such as the following. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Multiple policies can be used in a single config.</p>
+</div>
 <ul>
 <li><a href="https://prometheus.io">Prometheus</a></li>
 <li>HTTP endpoint returning JSON</li>
-<li>Random Metric (for testing)</li>
+<li>Random metric (for testing)</li>
 </ul>
 <h2 id="config-interfaces">Config Interfaces</h2>
 <p>Your Cloud and policy configuration are defined by a configuration. Scalr reads its configuration on every run and can be changed inbetween runs.</p>
