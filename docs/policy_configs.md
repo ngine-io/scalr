@@ -44,6 +44,32 @@ policy:
   target: 5
 ```
 
+## Time Policy
+
+Time based scaling, scaling during time ranges.
+
+```yaml
+policy:
+- name: Scaling up at 7 a.m. by factor 2 (pre-heating for known load)
+  source: time
+  target: 2
+  config:
+    start_time: "06:58"
+    end_time: "07:00"
+    metric: 1
+```
+
+```yaml
+policy:
+- name: Scaling down during night
+  source: time
+  target: 1
+  config:
+    start_time: "22:00"
+    end_time: "05:00"
+    metric: 10
+```
+
 ## Random Policy
 
 For testing purpose, random metric to get some action.

@@ -29,6 +29,22 @@ policies:
       start: 1
       stop: 10
 
+  - name: Scaling up at 7 a.m. by factor 3
+    source: time
+    target: 3
+    config:
+      start_time: "06:58"
+      end_time: "07:00"
+      metric: 1
+
+  - name: Scaling down during night by factor 0.1
+    source: time
+    target: 1
+    config:
+      start_time: "22:00"
+      end_time: "06:59"
+      metric: 10
+
 cloud:
   ### Cloudscale.ch
   kind: cloudscale_ch

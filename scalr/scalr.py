@@ -67,7 +67,7 @@ class Scalr:
             policy_factor: float = policy.get_scaling_factor()
             log.debug(f"Policy scaling factor: {policy_factor}")
 
-            if policy_factor == 0:
+            if policy_factor <= 0:
                 log.debug(f"Ignoring factor 0, keep current scaling factor: {scaling_factor}")
                 continue
 
