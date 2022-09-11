@@ -66,11 +66,17 @@ class Scalr:
             policy.configure(config=policy_config)
             policy_factor: float = policy.get_scaling_factor()
             log.debug(f"Policy scaling factor: {policy_factor}")
+
+            if policy_factor == 0:
+                log.debug(f"Ignoring factor 0, keep current scaling factor: {scaling_factor}")
+                continue
+
             if policy_factor > scaling_factor:
                 scaling_factor = policy_factor
                 log.debug(f"Set scaling factor: {scaling_factor}")
-            else:
-                log.debug(f"Keep scaling factor: {scaling_factor}")
+                continue
+
+            log.debug(f"Keep current scaling factor: {scaling_factor}")
         return scaling_factor
 
     def scale(self, diff: int, cloud: CloudAdapter) -> None:
