@@ -7,7 +7,7 @@ pydantic-yaml==0.6.3
 pydantic==1.9.1
 python-digitalocean==1.17.0
 python-dotenv==0.19.2
-python-json-logger==2.0.2
+python-json-logger==2.0.7
 PyYAML==6.0
 requests==2.27.1
 schedule==1.1.0
