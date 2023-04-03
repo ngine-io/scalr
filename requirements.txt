@@ -1,6 +1,6 @@
 cloudscale-sdk==0.7.0
 cs==3.0.0
-hcloud==1.16.0
+hcloud==1.18.2
 prometheus-api-client==0.5.3
 prometheus-client==0.13.1
 pydantic-yaml==0.11.2
