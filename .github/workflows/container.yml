@@ -10,11 +10,12 @@
 name: Create and publish a Container image
 
 on:
-  push:
-    branches:
-      - "main"
-    tags:
-      - "v*"
+  workflow_run:
+    workflows: ["Python tests"]
+    branches: [main]
+    types:
+      - completed
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ngine-io/scalr
@@ -22,6 +23,7 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       packages: write
