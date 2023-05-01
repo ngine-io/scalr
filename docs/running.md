@@ -22,7 +22,7 @@ scalr-ngine --periodic
 
 ## Docker
 
-We provide docker images as `registry.gitlab.com/ngine/docker-images/scalr:latest`.
+We provide docker images as `ghcr.io/ngine-io/scalr:main`.
 
 A minimal docker compose file would look like:
 
@@ -31,7 +31,7 @@ A minimal docker compose file would look like:
 version: "3.9"
 services:
   scalr:
-    image: registry.gitlab.com/ngine/docker-images/scalr:latest
+    image: ghcr.io/ngine-io/scalr:main
     ports:
       - "8000:8000"
     command: --periodic
