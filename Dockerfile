@@ -8,7 +8,7 @@ RUN pip install -e .
 WORKDIR /app
 
 RUN rm -rf /build
-COPY docker/config.yml .
+COPY ./docker/config.yml .
 
 USER 1000
 

@@ -10,3 +10,4 @@ site
 config.yml
 tests/.coverage
 tests/coverage.xml
+!/docker/*
