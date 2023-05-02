@@ -1,9 +1,12 @@
 FROM docker.io/python:3.11.3-slim
 
-WORKDIR /build
-COPY . .
+ENV MPLCONFIGDIR /tmp
+RUN pip install --upgrade wheel pip
 
-RUN pip install -e .
+WORKDIR /build
+
+COPY dist/scalr_ngine-*.whl .
+RUN pip install scalr_ngine-*.whl
 
 WORKDIR /app
 
