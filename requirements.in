@@ -1,0 +1,14 @@
+cloudscale-sdk
+cs
+hcloud
+prometheus-api-client
+prometheus-client
+pydantic-yaml
+pydantic
+python-digitalocean
+python-dotenv
+python-json-logger
+PyYAML
+requests
+schedule
+backports.zoneinfo;python_version<"3.9"
