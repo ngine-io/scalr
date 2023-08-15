@@ -3,7 +3,7 @@ cs
 hcloud
 prometheus-api-client
 prometheus-client
-pydantic-yaml<1.0.0
+pydantic-yaml<2.0.0
 pydantic
 python-digitalocean
 python-dotenv

@@ -5,7 +5,6 @@ contourpy==1.1.0
 cs==3.2.0
 cycler==0.11.0
 dateparser==1.1.8
-deprecated==1.2.14
 fonttools==4.42.0
 hcloud==1.27.2
 httmock==1.4.0
@@ -21,7 +20,7 @@ pillow==10.0.0
 prometheus-api-client==0.5.3
 prometheus-client==0.17.1
 pydantic==1.10.12
-pydantic-yaml==0.11.2
+pydantic-yaml==1.1.1
 pyparsing==3.0.9
 python-dateutil==2.8.2
 python-digitalocean==1.17.0
@@ -31,13 +30,13 @@ pytz==2023.3
 pyyaml==6.0.1
 regex==2023.8.8
 requests==2.31.0
+ruamel-yaml==0.17.32
+ruamel-yaml-clib==0.2.7
 schedule==1.2.0
 six==1.16.0
-types-deprecated==1.2.9.3
 typing-extensions==4.7.1
 tzdata==2023.3
 tzlocal==5.0.1
 urllib3==2.0.4
-wrapt==1.15.0
 xdg==6.0.0
 zipp==3.16.2
