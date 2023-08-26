@@ -6,13 +6,13 @@ cs==3.2.0
 cycler==0.11.0
 dateparser==1.1.8
 deprecated==1.2.14
-fonttools==4.42.0
+fonttools==4.42.1
 hcloud==1.28.0
 httmock==1.4.0
 idna==3.4
 importlib-metadata==6.8.0
 jsonpickle==3.0.2
-kiwisolver==1.4.4
+kiwisolver==1.4.5
 matplotlib==3.7.2
 numpy==1.25.2
 packaging==23.1
