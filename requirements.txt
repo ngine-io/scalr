@@ -7,7 +7,7 @@ cycler==0.12.1
 dateparser==1.2.0
 deprecated==1.2.14
 fonttools==4.49.0
-hcloud==1.33.2
+hcloud==1.34.0
 httmock==1.4.0
 idna==3.6
 importlib-metadata==7.0.2
