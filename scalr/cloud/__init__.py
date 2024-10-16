@@ -1,9 +1,6 @@
-from abc import ABC, abstractclassmethod
+from abc import ABC
 from dataclasses import dataclass
 from typing import List, Optional
-
-from scalr.config import CloudConfig, ScaleDownSelectionEnum
-from scalr.log import log
 
 
 @dataclass
@@ -27,19 +24,19 @@ class CloudAdapter(ABC):
         self.launch = launch
         self.filter = filter
 
-    @abstractclassmethod
-    def get_current_instances(self) -> List[CloudInstance]:
+    @classmethod
+    def get_current_instances(cls) -> List[CloudInstance]:
         """Returns a list of a represation an instance."""
         return list()
 
-    @abstractclassmethod
-    def ensure_instances_running(self):
+    @classmethod
+    def ensure_instances_running(cls):
         """Ensure affected instances are running."""
 
-    @abstractclassmethod
-    def deploy_instance(self, name: str):
+    @classmethod
+    def deploy_instance(cls, name: str):
         """Deploys an instance using launch config with a filter added."""
 
-    @abstractclassmethod
-    def destroy_instance(self, instance: CloudInstance):
+    @classmethod
+    def destroy_instance(cls, instance: CloudInstance):
         """Destroys an instance based on a strategy"""
