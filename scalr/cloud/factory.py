@@ -3,7 +3,6 @@ from scalr.cloud.adapters.cloudscale_ch import CloudscaleCloudAdapter
 from scalr.cloud.adapters.cloudstack import CloudstackCloudAdapter
 from scalr.cloud.adapters.digitalocean import DigitaloceanCloudAdapter
 from scalr.cloud.adapters.dummy import DummyCloudAdapter
-from scalr.cloud.adapters.exoscale import ExoscaleCloudAdapter
 from scalr.cloud.adapters.hcloud import HcloudCloudAdapter
 from scalr.cloud.adapters.vultr import VultrCloudAdapter
 from scalr.log import log
@@ -15,7 +14,6 @@ class CloudAdapterFactory:
     ADAPTERS = {
         "cloudscale_ch": CloudscaleCloudAdapter,
         "cloudstack": CloudstackCloudAdapter,
-        "exoscale": ExoscaleCloudAdapter,
         "digitalocean": DigitaloceanCloudAdapter,
         "hcloud": HcloudCloudAdapter,
         "vultr": VultrCloudAdapter,

@@ -142,23 +142,3 @@ cloud:
       packages:
         - nginx
 ```
-
-## Exoscale
-
-```yaml
-  kind: exoscale
-  launch_config:
-    service_offering: Micro
-    template: Linux Debian 11 (Bullseye) 64-bit
-    zone: ch-dk-2
-    ssh_key: my-ssh-key
-    use_ipv6: true
-    tags:
-      project: gemini
-    root_disk_size: 20
-    user_data: |
-      #cloud-config
-      manage_etc_hosts: true
-      packages:
-        - nginx
-```
