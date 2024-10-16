@@ -10,12 +10,11 @@ This is the connector to the API of your Cloud provider. It reads current availa
 - [Hetzner Cloud](https://www.hetzner.com/cloud)
 - [DigitalOcean](https://www.digitalocean.com)
 - [Apache CloudStack](https://cloudstack.apache.org)
-- [Exoscale](https://www.exoscale.com)
 - [Vultr](https://www.vultr.com)
 
 ## Policy Adapters
 
-A policy defines check of a target value (amount of CPU, amount of HTTP requests, etc) and where to gather the metric from, such as the following. 
+A policy defines check of a target value (amount of CPU, amount of HTTP requests, etc) and where to gather the metric from, such as the following.
 
 !!! note
     Multiple policies can be used in a single config.

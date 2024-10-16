@@ -42,13 +42,6 @@ CLOUDSTACK_API_SECRET=<...>
 DIGITALOCEAN_ACCESS_TOKEN=<...>
 ```
 
-### Exoscale API settings
-
-```ini
-EXOSCALE_API_KEY=<...>
-EXOSCALE_API_SECRET=<...>
-```
-
 ### Hetzner Cloud API token
 
 ```ini
