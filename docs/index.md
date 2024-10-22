@@ -20,6 +20,7 @@ A policy defines check of a target value (amount of CPU, amount of HTTP requests
     Multiple policies can be used in a single config.
 
 - [Prometheus](https://prometheus.io)
+- Time Policy
 - HTTP endpoint returning JSON
 - Random metric (for testing)
 
