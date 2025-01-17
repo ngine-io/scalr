@@ -64,11 +64,11 @@ class HcloudCloudAdapter(CloudAdapter):
             "ssh_keys": [SSHKey(ssh_key) for ssh_key in launch_config["ssh_keys"]],
             "location": Location(launch_config["location"]),
             "firewalls": [
-                Firewall(name=firewall_name)
-                for firewall_name in launch_config["firewalls"]
+                Firewall(id=firewall_id)
+                for firewall_id in launch_config["firewalls"]
             ],
             "networks": [
-                Network(name=network_name) for network_name in launch_config["networks"]
+                Network(id=network_id) for network_id in launch_config["networks"]
             ],
             "user_data": launch_config["user_data"],
         }
