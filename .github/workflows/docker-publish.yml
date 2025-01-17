@@ -52,6 +52,8 @@ jobs:
         run: |
           python setup.py sdist bdist_wheel
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
@@ -94,6 +96,7 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
+          platforms: linux/arm64,linux/amd64
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
