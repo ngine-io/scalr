@@ -12,6 +12,9 @@ from hcloud.server_types.domain import ServerType
 from hcloud.servers.domain import Server
 from hcloud.ssh_keys.domain import SSHKey
 
+from hcloud.firewalls import Firewall
+from hcloud.networks import Network
+
 
 @dataclass
 class HcloudCloudInstance(CloudInstance):
@@ -60,6 +63,13 @@ class HcloudCloudAdapter(CloudAdapter):
             "image": Image(launch_config["image"]),
             "ssh_keys": [SSHKey(ssh_key) for ssh_key in launch_config["ssh_keys"]],
             "location": Location(launch_config["location"]),
+            "firewalls": [
+                Firewall(name=firewall_name)
+                for firewall_name in launch_config["firewalls"]
+            ],
+            "networks": [
+                Network(name=network_name) for network_name in launch_config["networks"]
+            ],
             "user_data": launch_config["user_data"],
         }
         self.hcloud.servers.create(**params)
