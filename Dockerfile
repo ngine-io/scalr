@@ -1,4 +1,4 @@
-FROM docker.io/python:3.12.7-slim
+FROM docker.io/python:3.13.2-slim
 
 ENV MPLCONFIGDIR /tmp
 RUN pip install --upgrade wheel pip
