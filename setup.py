@@ -40,7 +40,7 @@ setup(
     ],
     install_requires=install_requires,
     tests_require=tests_require,
-    python_requires=">=3.10",
+    python_requires=">=3.12",
     entry_points={
         "console_scripts": [
             "scalr-ngine = scalr.app:main",
