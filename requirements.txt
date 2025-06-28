@@ -37,7 +37,7 @@ types-deprecated==1.2.9.20240311
 typing-extensions==4.12.1
 tzdata==2024.1
 tzlocal==5.2
-urllib3==2.2.2
+urllib3==2.5.0
 wrapt==1.16.0
 xdg==6.0.0
 zipp==3.19.2
