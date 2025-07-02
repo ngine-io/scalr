@@ -17,7 +17,7 @@ matplotlib==3.10.3
 numpy==2.3.1
 packaging==25.0
 pandas==2.3.0
-pillow==11.2.1
+pillow==11.3.0
 prometheus-api-client==0.6.0
 prometheus-client==0.22.1
 pydantic==1.10.22
