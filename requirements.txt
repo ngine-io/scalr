@@ -6,7 +6,7 @@ cs==3.4.0
 cycler==0.12.1
 dateparser==1.2.2
 deprecated==1.2.18
-fonttools==4.60.1
+fonttools==4.61.0
 hcloud==2.11.1
 httmock==1.4.0
 idna==3.11
