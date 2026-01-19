@@ -4,7 +4,7 @@ cloudscale-sdk==0.7.0
 cs==3.4.0
 dateparser==1.2.2
 deprecated==1.2.18
-hcloud==2.12.0
+hcloud==2.15.0
 idna==3.11
 importlib-metadata==8.7.0
 jsonpickle==4.1.1
