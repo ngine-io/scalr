@@ -23,7 +23,7 @@ jobs:
           pip install tox tox-gh-actions
       - name: Test with tox
         run: tox
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         with:
           fail_ci_if_error: false
           directory: ./tests
