@@ -1,18 +1,28 @@
 from prometheus_api_client import PrometheusConnect
+
+from scalr.exceptions import MetricError
 from scalr.log import log
 from scalr.policy import PolicyAdapter
 
 
 class PrometheusPolicyAdapter(PolicyAdapter):
+    """Gathers the metric from a Prometheus instant query."""
+
     def get_current(self) -> float:
-        prom = PrometheusConnect(
+        prometheus = PrometheusConnect(
             url=self.config.get("url", "http://localhost:9090"),
             disable_ssl=self.config.get("disable_ssl", True),
         )
-        res = prom.custom_query(query=self.query)
-        if not res:
-            log.error("Prometheus query: no result")
-            raise Exception("Prometheus query: no result")
+        try:
+            result = prometheus.custom_query(query=self.query)
+        except Exception as ex:
+            raise MetricError(f"Prometheus query failed: {ex}") from ex
 
-        log.info(f"Prometheus query result: {res}")
-        return float(res[0].get("value")[-1])
+        if not result:
+            raise MetricError("Prometheus query returned no result")
+
+        log.info("Prometheus query result: %s", result)
+        try:
+            return float(result[0]["value"][-1])
+        except (KeyError, IndexError, TypeError, ValueError) as ex:
+            raise MetricError(f"Unexpected Prometheus query result: {result}") from ex

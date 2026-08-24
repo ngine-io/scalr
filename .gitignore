@@ -1,6 +1,7 @@
 .env
 .vscode
 .venv
+.venvs/
 .tox
 *.egg-info
 build

@@ -7,12 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - name: Install uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d
         with:
-          python-version: "3.13"
-      - name: Install ruff
-        run: pip install ruff
+          enable-cache: true
       - name: Lint
-        run: ruff check --output-format=github .
+        run: uv run --locked --only-group dev ruff check --output-format=github .
       - name: Format check
-        run: ruff format --check .
+        run: uv run --locked --only-group dev ruff format --check .

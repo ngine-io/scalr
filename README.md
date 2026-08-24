@@ -13,6 +13,29 @@ Scale Cloud instances based on policy checks in a configurable interval.
 
 Please visit https://ngine-io.github.io/scalr/
 
+## Development
+
+The project uses [uv](https://docs.astral.sh/uv/). Dependencies live in
+`pyproject.toml` and are pinned in `uv.lock`.
+
+```shell
+# Create the environment from the lock file
+uv sync --group dev
+
+# Tests on the current interpreter
+make test
+
+# Tests on every supported interpreter (3.10 - 3.13)
+make test-all
+
+# Lint and format
+make lint
+make format
+
+# Refresh the pinned versions
+make upgrade
+```
+
 ## License
 
 MIT License
