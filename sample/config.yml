@@ -12,7 +12,7 @@ cooldown_timeout: 60
 
 policies:
   ## Query a web endpoint.
-  ## A JSON return o {"metric": <int>} is expected in this case
+  ## A JSON return of {"metric": <int>} is expected in this case
   - name: my check over web
     target: 5
     source: web
