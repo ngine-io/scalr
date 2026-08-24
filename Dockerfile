@@ -2,7 +2,7 @@
 # the venv built below can never be copied onto a different Python or glibc.
 # A named stage is used instead of an ARG because Dependabot does not resolve
 # ARG substitution in FROM and would stop updating the base image.
-FROM docker.io/python:3.14.6-slim AS base
+FROM docker.io/python:3.14.7-slim AS base
 
 # Build stage: install the locked dependency set into a self-contained venv.
 FROM base AS builder
