@@ -11,12 +11,21 @@ As "one shot" meant to be used as cron job execution:
 scalr-ngine
 ```
 
+With an explicit config file:
+
+```shell
+scalr-ngine --config /etc/scalr/config.yml
+```
+
 As daemon:
 
 ```shell
 
 export SCALR_INTERVAL=20
 scalr-ngine --periodic
+
+# or without env vars
+scalr-ngine --periodic --interval 20
 
 ```
 

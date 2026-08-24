@@ -6,8 +6,13 @@
 build
 dist
 *.pyc
+__pycache__/
 site
-config.yml
-tests/.coverage
-tests/coverage.xml
+/config.yml
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.pytest_cache/
+.ruff_cache/
 !/docker/*
