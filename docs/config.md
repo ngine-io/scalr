@@ -29,9 +29,11 @@ min: 2
 max: 5
 
 # The max value of instances to be scaled down in one run
+# Set to 0 to never scale down
 max_step_down: 1
 
-# Strategy of order to destroy instances
+# Which instance to destroy first when scaling down:
+# oldest, youngest or random
 scale_down_selection: oldest
 
 # After scaling down, wait for so long in seconds
@@ -45,3 +47,13 @@ cloud:
   kind: ...
   launch_config: {}
 ```
+
+## Validation
+
+The config is validated before every run and scaling is aborted if it does not
+hold up:
+
+- `min` must not be negative and must not be greater than `max`.
+- `scale_down_selection` must be one of `oldest`, `youngest` or `random`.
+- Unknown keys are rejected. A misplaced or misspelled key used to be ignored
+  silently, which could disable a policy without any hint in the logs.

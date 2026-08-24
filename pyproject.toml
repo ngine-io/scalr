@@ -1,6 +1,117 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "scalr-ngine"
+description = "Autoscaling for Clouds."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "René Moser", email = "mail@renemoser.net" }]
+keywords = ["autoscaling", "cloud", "prometheus"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+]
+dynamic = ["version"]
+dependencies = [
+    "cloudscale-sdk",
+    "cs",
+    "hcloud",
+    "prometheus-api-client",
+    "prometheus-client",
+    # v2 API: ConfigDict, model_validator, model_validate
+    "pydantic>=2",
+    "python-digitalocean",
+    "python-dotenv",
+    # 3.1 moved the formatter to pythonjsonlogger.json, used by logging.ini
+    "python-json-logger>=3.1",
+    "PyYAML",
+    "requests",
+    "schedule",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov",
+    "responses",
+    "ruff",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+]
+
+[project.urls]
+Homepage = "https://github.com/ngine-io/scalr"
+Documentation = "https://ngine-io.github.io/scalr/"
+Source = "https://github.com/ngine-io/scalr"
+
+[project.scripts]
+scalr-ngine = "scalr.app:main"
+
+[tool.setuptools.packages.find]
+include = ["scalr*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "scalr.version.__version__" }
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+filterwarnings = [
+    "error",
+    "default::DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["scalr"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    'if __name__ == "__main__":',
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "A",   # flake8-builtins
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",   # line length is handled by the formatter
+    "B008",
+    "SIM105",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Test doubles mirror third party APIs that use `id`/`filter` as argument names.
+"tests/*" = ["A002"]

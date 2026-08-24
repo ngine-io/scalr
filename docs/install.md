@@ -5,6 +5,8 @@
 !!! warning
     Scalr is in beta.
 
+Scalr requires Python 3.10 or newer.
+
 ```shell
 pip install scalr-ngine
 ```
@@ -16,8 +18,18 @@ Settings can be set either by ENV vars or by providing a `.env` file:
 ### Common ENV variables
 
 ```ini
+# One of DEBUG, INFO, WARNING, ERROR. Defaults to INFO
 SCALR_LOG_LEVEL=INFO
+# Path to the scaling config. Defaults to ./config.yml
 SCALR_CONFIG=./config.yml
+# Optional path to a logging config file. Defaults to ./logging.ini if present
+SCALR_LOG_CONFIG=./logging.ini
+# Run periodically instead of once. One of 1/true/yes/on
+SCALR_PERIODIC=false
+# Interval in seconds used with SCALR_PERIODIC. Defaults to 60
+SCALR_INTERVAL=60
+# Port of the Prometheus exporter in periodic mode. Defaults to 8000
+SCALR_PROMETHEUS_EXPORTER_PORT=8000
 ```
 
 ## Cloud ENV variables

@@ -1,24 +1,47 @@
+PYTHON_VERSIONS ?= 3.10 3.11 3.12 3.13 3.14
+
+.PHONY: clean build lint format test test-all lock upgrade docs docs-publish test-release release
+
 clean:
-	rm -rf *.egg-info
-	rm -rf *.dist-info
-	rm -rf dist
-	rm -rf build
-	find -name '__pycache__' -exec rm -fr {} || true \;
+	rm -rf *.egg-info dist build .venvs coverage.xml .coverage
+	find . -name '__pycache__' -prune -exec rm -rf {} +
 
 build: clean
-	python3 setup.py sdist bdist_wheel
+	uv build
 
-test-release:
-	twine upload --repository testpypi dist/*
+lint:
+	uv run --only-group dev ruff check .
+	uv run --only-group dev ruff format --check .
 
-release:
-	twine upload dist/*
+format:
+	uv run --only-group dev ruff check --fix .
+	uv run --only-group dev ruff format .
+
+# Tests on the current interpreter
+test:
+	uv run --group dev pytest --cov --cov-report=term-missing
+
+# Tests on every supported interpreter, each in its own environment
+test-all:
+	@for v in $(PYTHON_VERSIONS); do \
+		echo "===== Python $$v ====="; \
+		UV_PROJECT_ENVIRONMENT=.venvs/$$v uv run --locked --python $$v --group dev pytest -q || exit 1; \
+	done
+
+lock:
+	uv lock
+
+upgrade:
+	uv lock --upgrade
+
+docs:
+	uv run --only-group docs mkdocs serve
 
 docs-publish:
-	mkdocs gh-deploy
+	uv run --only-group docs mkdocs gh-deploy
 
-test:
-	tox
+test-release: build
+	uv publish --publish-url https://test.pypi.org/legacy/
 
-update:
-	pip-compile -U --no-header --no-annotate --strip-extras --resolver backtracking
+release: build
+	uv publish

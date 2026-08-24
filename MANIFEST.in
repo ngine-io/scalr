@@ -1,0 +1,6 @@
+include *.yml
+include logging.ini
+graft tests
+# The config.yml in the repo root is a local working config, not part of a release.
+exclude config.yml
+global-exclude *.py[cod]

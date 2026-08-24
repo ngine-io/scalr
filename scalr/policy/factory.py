@@ -1,3 +1,4 @@
+from scalr.exceptions import AdapterNotFoundError
 from scalr.log import log
 from scalr.policy import PolicyAdapter
 from scalr.policy.adapters.dummy import DummyPolicyAdapter
@@ -7,20 +8,21 @@ from scalr.policy.adapters.web import WebPolicyAdapter
 
 
 class PolicyAdapterFactory:
+    """Creates a policy adapter for a configured policy source."""
 
-    ADAPTERS = {
+    ADAPTERS: dict[str, type[PolicyAdapter]] = {
         "dummy": DummyPolicyAdapter,
         "prometheus": PrometheusPolicyAdapter,
-        "web": WebPolicyAdapter,
+        "random": DummyPolicyAdapter,
         "time": TimePolicyAdapter,
+        "web": WebPolicyAdapter,
     }
 
     @staticmethod
     def create(source: str) -> PolicyAdapter:
+        log.info("Instantiate policy adapter %s", source)
         try:
-            log.info("Instantiate policy adapter %s", source)
-            obj_class = PolicyAdapterFactory.ADAPTERS[source]
-            obj = obj_class()
-            return obj
+            adapter_class = PolicyAdapterFactory.ADAPTERS[source]
         except KeyError as ex:
-            raise NotImplementedError(f"{ex} not implemented") from ex
+            raise AdapterNotFoundError(f"{ex} not implemented") from ex
+        return adapter_class()

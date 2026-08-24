@@ -19,10 +19,16 @@ policy:
 - name: CPU avg load < 60%
   target: 60
   source: prometheus
+  query: '100 - (avg by (job) (rate(node_cpu_seconds_total{mode="idle", instance=~"cluster-node.*"}[10m])) * 100)'
   config:
     url: http://prometheus.example.com:9090
-    query: '100 - (avg by (job) (rate(node_cpu_seconds_total{mode="idle", instance=~"cluster-node.*"}[10m])) * 100)'
+    # Optional, defaults to true
+    disable_ssl: true
 ```
+
+!!! note
+    The PromQL expression goes into the top level `query` key, everything
+    connection related into `config`.
 
 ## Web Policy
 
@@ -39,14 +45,26 @@ policy:
     # Optional headers
     headers:
       Authorization: Bearer xyz
-    # Optional default key 'data'
+    # Optional, key of the JSON document to read, defaults to 'data'
     key: metric
+    # Optional, request timeout in seconds, defaults to 60
+    timeout: 60
+    # Optional, number of attempts, defaults to 3
+    retries: 3
+    # Optional, seconds to wait between attempts, defaults to 2
+    retry_wait: 2
   target: 5
 ```
 
+A failing request is retried. If the endpoint stays unreachable, or the
+configured key is missing, the policy reports no metric and is ignored for this
+run instead of triggering a scaling action.
+
 ## Time Policy
 
-Time based scaling, scaling during time ranges.
+Time based scaling, scaling during time ranges. The start time is inclusive,
+the end time exclusive, and ranges may span midnight. Outside of the range the
+policy reports no metric and is ignored.
 
 ```yaml
 policy:
@@ -72,7 +90,8 @@ policy:
 
 ## Random Policy
 
-For testing purpose, random metric to get some action.
+For testing purpose, random metric to get some action. Also available under the
+name `dummy`.
 
 ```yaml
 policy:
@@ -80,6 +99,8 @@ policy:
   source: random
   target: 3
   config:
+    # Optional, defaults to 0
     start: 1
+    # Optional, defaults to 100
     stop: 10
 ```

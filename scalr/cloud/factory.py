@@ -5,27 +5,27 @@ from scalr.cloud.adapters.digitalocean import DigitaloceanCloudAdapter
 from scalr.cloud.adapters.dummy import DummyCloudAdapter
 from scalr.cloud.adapters.hcloud import HcloudCloudAdapter
 from scalr.cloud.adapters.vultr import VultrCloudAdapter
+from scalr.exceptions import AdapterNotFoundError
 from scalr.log import log
 
 
 class CloudAdapterFactory:
-    """Cloud Adapter Factory"""
+    """Creates a cloud adapter for a configured cloud kind."""
 
-    ADAPTERS = {
+    ADAPTERS: dict[str, type[CloudAdapter]] = {
         "cloudscale_ch": CloudscaleCloudAdapter,
         "cloudstack": CloudstackCloudAdapter,
         "digitalocean": DigitaloceanCloudAdapter,
+        "dummy": DummyCloudAdapter,
         "hcloud": HcloudCloudAdapter,
         "vultr": VultrCloudAdapter,
-        "dummy": DummyCloudAdapter,
     }
 
     @staticmethod
     def create(name: str) -> CloudAdapter:
+        log.info("Instantiate cloud adapter %s", name)
         try:
-            log.info("Instantiate cloud adapter %s", name)
-            obj_class = CloudAdapterFactory.ADAPTERS[name]
-            obj = obj_class()
-            return obj
+            adapter_class = CloudAdapterFactory.ADAPTERS[name]
         except KeyError as ex:
-            raise NotImplementedError(f"{ex} not implemented")
+            raise AdapterNotFoundError(f"{ex} not implemented") from ex
+        return adapter_class()

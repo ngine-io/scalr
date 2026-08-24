@@ -1,0 +1,8 @@
+*
+!pyproject.toml
+!uv.lock
+!README.md
+!LICENSE
+!scalr/
+!docker/config.yml
+**/__pycache__/

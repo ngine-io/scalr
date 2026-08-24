@@ -1,30 +1,29 @@
 import base64
 import os
-from dataclasses import asdict
-from typing import List, Optional
 
 import requests
+
 from scalr.cloud import CloudAdapter, GenericCloudInstance
 from scalr.log import log
 
-VULTR_API_KEY: str = str(os.getenv("VULTR_API_KEY"))
-
 
 class Vultr:
+    """Minimal client for the Vultr API v2."""
 
     VULTR_API_URL: str = "https://api.vultr.com/v2"
 
-    def __init__(self, api_key: str) -> None:
+    def __init__(self, api_key: str, timeout: int = 10) -> None:
         self.api_key = api_key
+        self.timeout = timeout
 
     def query_api(
         self,
         method: str,
         path: str,
-        params: Optional[dict] = None,
-        json: Optional[dict] = None,
+        params: dict | None = None,
+        json: dict | None = None,
     ) -> requests.Response:
-        r = requests.request(
+        response = requests.request(
             method=method,
             url=f"{self.VULTR_API_URL}/{path}",
             headers={
@@ -33,18 +32,14 @@ class Vultr:
             },
             params=params,
             json=json,
-            timeout=10,
+            timeout=self.timeout,
         )
-        r.raise_for_status()
-        return r
+        response.raise_for_status()
+        return response
 
-    def list_instances(self, tag=None, label=None) -> List[dict]:
-        params = {
-            "tag": tag,
-            "label": label,
-        }
-        r = self.query_api("get", "instances", params=params)
-        return r.json().get("instances", dict())
+    def list_instances(self, tag: str | None = None, label: str | None = None) -> list[dict]:
+        response = self.query_api("get", "instances", params={"tag": tag, "label": label})
+        return response.json().get("instances", [])
 
     def start_instance(self, instance_id: str) -> None:
         self.query_api("post", f"instances/{instance_id}/start")
@@ -52,67 +47,36 @@ class Vultr:
     def delete_instance(self, instance_id: str) -> None:
         self.query_api("delete", f"instances/{instance_id}")
 
-    def create_instance(
-        self,
-        region,
-        plan,
-        os_id: Optional[str] = None,
-        script_id: Optional[str] = None,
-        iso_id: Optional[str] = None,
-        snapshot_id: Optional[str] = None,
-        enable_ipv6: Optional[bool] = None,
-        attach_private_network: Optional[List[str]] = None,
-        label: Optional[str] = None,
-        sshkey_id: Optional[List[str]] = None,
-        backups: Optional[str] = None,
-        app_id: Optional[str] = None,
-        image_id: Optional[str] = None,
-        user_data: Optional[str] = None,
-        ddos_protection: Optional[bool] = None,
-        activation_email: Optional[bool] = None,
-        hostname: Optional[str] = None,
-        tag: Optional[str] = None,
-        firewall_group_id: Optional[str] = None,
-        enable_private_network: Optional[bool] = None,
-    ) -> dict:
+    def create_instance(self, region: str, plan: str, **kwargs) -> dict:
+        """Creates an instance.
 
+        Args:
+            region: Vultr region id, e.g. ``fra``.
+            plan: Vultr plan id, e.g. ``vc2-1c-1gb``.
+            **kwargs: Any other field the Vultr create instance API accepts,
+                e.g. ``os_id``, ``label``, ``hostname``, ``tag``, ``sshkey_id``
+                or ``user_data``. ``user_data`` is base64 encoded on the fly.
+        """
+        payload: dict = {"region": region, "plan": plan, **kwargs}
+
+        user_data = payload.get("user_data")
         if user_data:
-            user_data = base64.b64encode(user_data.encode("utf-8")).decode("utf-8")
+            payload["user_data"] = base64.b64encode(user_data.encode("utf-8")).decode("utf-8")
 
-        json = {
-            "region": region,
-            "plan": plan,
-            "os_id": os_id,
-            "script_id": script_id,
-            "iso_id": iso_id,
-            "snapshot_id": snapshot_id,
-            "enable_ipv6": enable_ipv6,
-            "attach_private_network": attach_private_network,
-            "label": label,
-            "sshkey_id": sshkey_id,
-            "backups": backups,
-            "app_id": app_id,
-            "image_id": image_id,
-            "user_data": user_data,
-            "ddos_protection": ddos_protection,
-            "activation_email": activation_email,
-            "hostname": hostname,
-            "tag": tag,
-            "firewall_group_id": firewall_group_id,
-            "enable_private_network": enable_private_network,
-        }
-        r = self.query_api("post", "instances", json=json)
-        return r.json().get("instance", dict())
+        response = self.query_api("post", "instances", json=payload)
+        return response.json().get("instance", {})
 
 
 class VultrCloudAdapter(CloudAdapter):
-    def __init__(self):
+    """Cloud adapter for Vultr."""
+
+    def __init__(self) -> None:
         super().__init__()
         self.vultr = Vultr(api_key=str(os.getenv("VULTR_API_KEY")))
 
-    def get_current_instances(self) -> List[GenericCloudInstance]:
-        filter_tag = f"scalr={self.filter}"
-        log.info(f"vultr: Querying with filter_tag: {filter_tag}")
+    def get_current_instances(self) -> list[GenericCloudInstance]:
+        filter_tag = f"scalr={self.filter_name}"
+        log.info("vultr: Querying with filter_tag: %s", filter_tag)
         servers = self.vultr.list_instances(tag=filter_tag)
         return [
             GenericCloudInstance(
@@ -125,31 +89,29 @@ class VultrCloudAdapter(CloudAdapter):
 
     def ensure_instances_running(self) -> None:
         log.info("vultr: ensure running")
-
         for instance in self.get_current_instances():
-            log.info(f"vultr: instance {instance.name} status {instance.status}")
-            if instance.status == "running":
+            log.info("vultr: instance %s status %s", instance.name, instance.status)
+            if instance.status != "stopped":
                 continue
 
-            if instance.status == "stopped":
-                try:
-                    self.vultr.start_instance(instance_id=instance.id)
-                    log.info(f"vultr: Instance {instance.name} started")
-                except Exception as ex:
-                    log.error(ex)
+            try:
+                self.vultr.start_instance(instance_id=instance.id)
+                log.info("vultr: Instance %s started", instance.name)
+            except requests.RequestException as ex:
+                log.error("vultr: Unable to start %s: %s", instance.name, ex)
 
     def deploy_instance(self, name: str) -> None:
-        log.info(f"vultr: Deploying new instance named {name}")
-        launch_config = self.launch.copy()
+        log.info("vultr: Deploying new instance named %s", name)
+        launch_config = dict(self.launch)
         launch_config.update(
             {
                 "label": name,
                 "hostname": name,
-                "tag": f"scalr={self.filter}",
+                "tag": f"scalr={self.filter_name}",
             }
         )
         self.vultr.create_instance(**launch_config)
 
     def destroy_instance(self, instance: GenericCloudInstance) -> None:
-        log.info(f"vultr: Destroying instance {instance}")
+        log.info("vultr: Destroying instance %s", instance)
         self.vultr.delete_instance(instance_id=instance.id)
