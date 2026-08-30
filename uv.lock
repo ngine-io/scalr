@@ -374,14 +374,15 @@ toml = [
 
 [[package]]
 name = "cs"
-version = "4.0.1"
+version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "requests" },
+    { name = "tzdata" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/34/87/f993b727965ea6a6467087b3ebd57312a8ff9734d0a9f42c4d15f7d740d0/cs-4.0.1.tar.gz", hash = "sha256:98df824103194aae8e409f1bd0ce100cfa2b52d5dd1c9fc1bf667739edd620f0", size = 14990, upload-time = "2026-06-17T12:40:15.071Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/27/fb/4ee652f13eaba2909c78593116217f34552fbf330abb55d859f175903935/cs-5.0.0.tar.gz", hash = "sha256:26edf0571e78186d2ed363ce279b7c50a680b88382570cc7b32d902dcbfe9365", size = 21583, upload-time = "2026-08-24T20:28:19.514Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4c/32/76c3e428b8b95d0481e22326fbc33f4d559410a3071bd9b576e54095bbf0/cs-4.0.1-py2.py3-none-any.whl", hash = "sha256:efe43a6cb86828b2185790b4b2f76a9651a2264439e1ad053cde104053bfb2e7", size = 13594, upload-time = "2026-06-17T12:40:14.035Z" },
+    { url = "https://files.pythonhosted.org/packages/9e/06/27fc5f88c895f732f37d4915c674497e50460232cd7c903c825f0f4114b3/cs-5.0.0-py3-none-any.whl", hash = "sha256:1c957fa0168eabea51b4885644a32c3301bead7b137f30522b49bf26f64fb64c", size = 13998, upload-time = "2026-08-24T20:28:18.565Z" },
 ]
 
 [[package]]
