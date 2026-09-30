@@ -1,9 +1,8 @@
 import base64
-import os
 
 from cs import CloudStack
 
-from scalr.cloud import CloudAdapter, GenericCloudInstance
+from scalr.cloud import CloudAdapter, GenericCloudInstance, require_env
 from scalr.exceptions import CloudError
 from scalr.log import log
 
@@ -14,9 +13,9 @@ class CloudstackCloudAdapter(CloudAdapter):
     def __init__(self) -> None:
         super().__init__()
         self.cs = CloudStack(
-            endpoint=os.getenv("CLOUDSTACK_API_ENDPOINT"),
-            key=os.getenv("CLOUDSTACK_API_KEY"),
-            secret=os.getenv("CLOUDSTACK_API_SECRET"),
+            endpoint=require_env("CLOUDSTACK_API_ENDPOINT"),
+            key=require_env("CLOUDSTACK_API_KEY"),
+            secret=require_env("CLOUDSTACK_API_SECRET"),
         )
 
     def get_service_offering(self, name: str) -> dict:

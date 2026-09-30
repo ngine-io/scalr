@@ -1,9 +1,8 @@
 import base64
-import os
 
 import requests
 
-from scalr.cloud import CloudAdapter, GenericCloudInstance
+from scalr.cloud import CloudAdapter, GenericCloudInstance, require_env
 from scalr.log import log
 
 
@@ -72,7 +71,7 @@ class VultrCloudAdapter(CloudAdapter):
 
     def __init__(self) -> None:
         super().__init__()
-        self.vultr = Vultr(api_key=str(os.getenv("VULTR_API_KEY")))
+        self.vultr = Vultr(api_key=require_env("VULTR_API_KEY"))
 
     def get_current_instances(self) -> list[GenericCloudInstance]:
         filter_tag = f"scalr={self.filter_name}"

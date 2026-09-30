@@ -4,8 +4,23 @@ A cloud adapter talks to a single cloud provider and knows how to list, start,
 create and destroy the instances belonging to one scaling group.
 """
 
+import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+
+from scalr.exceptions import CloudError
+
+
+def require_env(name: str) -> str:
+    """Returns the value of a required env var, e.g. an API credential.
+
+    Raises:
+        CloudError: The env var is unset or empty.
+    """
+    value = os.environ.get(name, "").strip()
+    if not value:
+        raise CloudError(f"Required environment variable {name} is not set")
+    return value
 
 
 @dataclass

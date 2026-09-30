@@ -1,8 +1,6 @@
-import os
-
 from cloudscale import Cloudscale
 
-from scalr.cloud import CloudAdapter, GenericCloudInstance
+from scalr.cloud import CloudAdapter, GenericCloudInstance, require_env
 from scalr.log import log
 
 
@@ -11,7 +9,7 @@ class CloudscaleCloudAdapter(CloudAdapter):
 
     def __init__(self) -> None:
         super().__init__()
-        self.cloudscale = Cloudscale(api_token=str(os.getenv("CLOUDSCALE_API_TOKEN")))
+        self.cloudscale = Cloudscale(api_token=require_env("CLOUDSCALE_API_TOKEN"))
 
     def get_current_instances(self) -> list[GenericCloudInstance]:
         filter_tag = f"scalr={self.filter_name}"

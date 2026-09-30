@@ -1,4 +1,3 @@
-import os
 from dataclasses import dataclass
 
 from hcloud import APIException, Client
@@ -8,7 +7,7 @@ from hcloud.server_types.domain import ServerType
 from hcloud.servers.domain import Server
 from hcloud.ssh_keys.domain import SSHKey
 
-from scalr.cloud import CloudAdapter, CloudInstance
+from scalr.cloud import CloudAdapter, CloudInstance, require_env
 from scalr.log import log
 
 
@@ -25,7 +24,7 @@ class HcloudCloudAdapter(CloudAdapter):
 
     def __init__(self) -> None:
         super().__init__()
-        self.hcloud = Client(token=str(os.getenv("HCLOUD_API_TOKEN")))
+        self.hcloud = Client(token=require_env("HCLOUD_API_TOKEN"))
 
     def get_current_instances(self) -> list[HcloudCloudInstance]:
         label_selector = f"scalr={self.filter_name}"

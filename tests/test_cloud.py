@@ -1,7 +1,12 @@
 import pytest
 
-from scalr.cloud import CloudAdapter, GenericCloudInstance
+from scalr.cloud import CloudAdapter, GenericCloudInstance, require_env
+from scalr.cloud.adapters.cloudscale_ch import CloudscaleCloudAdapter
+from scalr.cloud.adapters.cloudstack import CloudstackCloudAdapter
 from scalr.cloud.adapters.dummy import DummyCloudAdapter
+from scalr.cloud.adapters.hcloud import HcloudCloudAdapter
+from scalr.cloud.adapters.vultr import VultrCloudAdapter
+from scalr.exceptions import CloudError
 
 
 def test_abstract_base_cannot_be_instantiated():
@@ -82,3 +87,33 @@ class TestDummyCloudAdapter:
     def test_ensure_instances_running(self, cloud):
         cloud.ensure_instances_running()
         assert all(i.status == "running" for i in cloud.get_current_instances())
+
+
+class TestRequireEnv:
+    def test_returns_the_value(self, monkeypatch):
+        monkeypatch.setenv("SCALR_TEST_TOKEN", "secret")
+        assert require_env("SCALR_TEST_TOKEN") == "secret"
+
+    @pytest.mark.parametrize("value", [None, "", "  "])
+    def test_missing_or_empty_raises(self, monkeypatch, value):
+        if value is None:
+            monkeypatch.delenv("SCALR_TEST_TOKEN", raising=False)
+        else:
+            monkeypatch.setenv("SCALR_TEST_TOKEN", value)
+        with pytest.raises(CloudError, match="SCALR_TEST_TOKEN"):
+            require_env("SCALR_TEST_TOKEN")
+
+
+@pytest.mark.parametrize(
+    ("adapter_class", "env_var"),
+    [
+        (CloudscaleCloudAdapter, "CLOUDSCALE_API_TOKEN"),
+        (CloudstackCloudAdapter, "CLOUDSTACK_API_ENDPOINT"),
+        (HcloudCloudAdapter, "HCLOUD_API_TOKEN"),
+        (VultrCloudAdapter, "VULTR_API_KEY"),
+    ],
+)
+def test_adapter_without_credentials_fails_fast(monkeypatch, adapter_class, env_var):
+    monkeypatch.delenv(env_var, raising=False)
+    with pytest.raises(CloudError, match=env_var):
+        adapter_class()
