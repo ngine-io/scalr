@@ -25,7 +25,7 @@ uv sync --group dev
 # Tests on the current interpreter
 make test
 
-# Tests on every supported interpreter (3.10 - 3.13)
+# Tests on every supported interpreter (3.10 - 3.14)
 make test-all
 
 # Lint and format
