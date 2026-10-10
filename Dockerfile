@@ -7,7 +7,7 @@ FROM docker.io/python:3.14.8-slim AS base
 # Build stage: install the locked dependency set into a self-contained venv.
 FROM base AS builder
 
-COPY --from=ghcr.io/astral-sh/uv:0.12.23 /uv /usr/local/bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.13.0 /uv /usr/local/bin/uv
 
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
