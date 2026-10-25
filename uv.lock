@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.10"
 
 [[package]]
@@ -374,15 +374,14 @@ toml = [
 
 [[package]]
 name = "cs"
-version = "5.1.0"
+version = "5.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "requests" },
-    { name = "tzdata" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4c/2b/c59c437310abcce9b6c647d1a157d38bd49a334c9cf0fd68b90acdbf735e/cs-5.1.0.tar.gz", hash = "sha256:dcfa2ab6103dcbd3a53f9f5d40731b4addd6a5a30f0d905ee80479a1e73df852", size = 21963, upload-time = "2026-09-13T08:18:12.524Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/43/f8/b0b42a764f533f1e0400e10e8d7ba21c2ad945e11f63a3daeec31b5c4e5d/cs-5.2.0.tar.gz", hash = "sha256:dd357fc6d538822634845f5e216cbb04fe95cedf0c5edf727bdc2bc4044dcdc6", size = 25660, upload-time = "2026-10-20T16:29:00.364Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9b/5a/13860577b9c58dc0479c01787322ffe678aba14bd60b298daa57883c7ea6/cs-5.1.0-py3-none-any.whl", hash = "sha256:a35876c45618e1373d7797d09b56b652e2bef096e585894c98aa84797cd85614", size = 14276, upload-time = "2026-09-13T08:18:11.536Z" },
+    { url = "https://files.pythonhosted.org/packages/51/a4/4d8f5d176ac19907ce1c9fa0cd2013952edc9eed1960eb72a801816aacd2/cs-5.2.0-py3-none-any.whl", hash = "sha256:87da7f883c9e28415ccee73dd81a80c4efaa63648a2695b302c7b5f2f0344cb0", size = 16663, upload-time = "2026-10-20T16:28:59.275Z" },
 ]
 
 [[package]]
